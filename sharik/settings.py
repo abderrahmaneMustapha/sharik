@@ -119,3 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+## files and images size  size
+MAX_FILE_SIZE =  20971520
+MAX_IMAGE_SIZE = 20971520
