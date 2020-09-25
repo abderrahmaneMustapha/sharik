@@ -28,18 +28,18 @@ class UserLevels(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 #Custome user model , but in the interface will be displayed as Member
 class Member(AbstractUser): 
-    username =models.CharField(_("username"), max_length=150)
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150)
-    date_birth = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False)
-    level = models.ForeignKey(UserLevels,verbose_name=_("user study level and field"), on_delete=models.CASCADE)
+    username =models.CharField(_("username"), max_length=150, null=True)
+    first_name = models.CharField(_("first name"), max_length=150, null=True)
+    last_name = models.CharField(_("last name"), max_length=150, null=True)
+    date_birth = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True)
+    level = models.ForeignKey(UserLevels,verbose_name=_("user study level and field"), on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email adress'), unique=True)
-    phone = PhoneNumberField(_("phone number"))
-    gender =models.IntegerField(_("Gender"), choices = Gender, default=1)
+    phone = PhoneNumberField(_("phone number"), null=True)
+    gender =models.IntegerField(_("Gender"), choices = Gender, default=1, null=True)
     description  = models.TextField(_("a short description"))
-    univ_key  = models.CharField(_("University key"), max_length=300, unique=True)
-    adress = models.CharField(_("adress"), max_length=500)
-    city = models.CharField(verbose_name=_("Wilaya in algeria"), max_length=500)
+    univ_key  = models.CharField(_("University key"), max_length=300, unique=True, null=True)
+    adress = models.CharField(_("adress"), max_length=500, null=True)
+    city = models.CharField(verbose_name=_("Wilaya in algeria"), max_length=500, null=True)
     profile_pic = models.ImageField(_('profile pic'), upload_to='users/profile_pics',validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])] ,null=True, blank=True)
     
     USERNAME_FIELD = 'email'
