@@ -25,7 +25,7 @@ SECRET_KEY = '1rkulx9@i5a*63j=5#re#3f=6trs2(_qb&kko*a-wvkpda0a@z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -96,6 +96,13 @@ DATABASES = {
 }
 AUTH_USER_MODEL = 'api.Member'
 
+# Add CORS_ORIGIN_WHITELIST to allow these domains be authorized to make cross-site HTTP requests
+CORS_ORIGIN_WHITELIST = [
+    #React App domain
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+    
+]
 
 #auth 
 GRAPHENE = {
@@ -116,15 +123,7 @@ GRAPHQL_JWT = {
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
-        "graphql_auth.mutations.VerifyAccount",
-        "graphql_auth.mutations.ResendActivationEmail",
-        "graphql_auth.mutations.SendPasswordResetEmail",
-        "graphql_auth.mutations.PasswordReset",
-        "graphql_auth.mutations.ObtainJSONWebToken",
-        "graphql_auth.mutations.VerifyToken",
-        "graphql_auth.mutations.RefreshToken",
-        "graphql_auth.mutations.RevokeToken",
-        "graphql_auth.mutations.VerifySecondaryEmail",
+      
     ],
 }
 

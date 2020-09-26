@@ -1,2 +1,2 @@
-from .users import *
+from .users import MemberCreationForm
 from .events import *

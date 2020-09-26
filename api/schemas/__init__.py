@@ -1,2 +1,1 @@
-from .users import *
-from .events import *
+from .events import Mutation,Query
