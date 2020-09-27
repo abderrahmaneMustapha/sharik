@@ -37,18 +37,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'graphene_django', 
+    "graphql_auth",
+    'api',     
     'django_filters',
-    'api',
-    'graphene_django',
-    
     # refresh tokens are optional
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    "graphql_auth",
+    
+     
+       
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -74,6 +79,33 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "graphql_auth.backends.GraphQLAuthBackend"
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    # optional
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+      
+    ],
+ 
+}
+
+GRAPHQL_AUTH = {
+       'REGISTER_MUTATION_FIELDS' : {
+        "email": "String",
+        "username": "String",
+        "password1": "String",
+        "password2": "String",
+    }
+}
+
+
 WSGI_APPLICATION = 'sharik.wsgi.application'
 
 # Database
@@ -84,7 +116,7 @@ import psycopg2.extensions
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sharikdatabase',
+        'NAME': 'sharikdb',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
@@ -112,20 +144,8 @@ GRAPHENE = {
     ],
 }
 
-AUTHENTICATION_BACKENDS = [
-    'graphql_auth.backends.GraphQLAuthBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
 
-GRAPHQL_JWT = {
-    "JWT_VERIFY_EXPIRATION": True,
-    # optional
-    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    "JWT_ALLOW_ANY_CLASSES": [
-        "graphql_auth.mutations.Register",
-      
-    ],
-}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

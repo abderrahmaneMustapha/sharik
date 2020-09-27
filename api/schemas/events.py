@@ -61,7 +61,7 @@ class UserJoinResquestMutation(DjangoModelFormMutation):
 # mutations end
 
 ### main mutation
-class Mutation(graphene.ObjectType):
+class EventMutation(graphene.ObjectType):
     add_event =  EventsMutation.Field()
     add_event_pictures = EventPicturesMutation.Field()
     add_event_user_join_request = UserJoinResquestMutation.Field()
