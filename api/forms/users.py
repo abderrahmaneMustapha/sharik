@@ -18,7 +18,7 @@ class MemberCreationForm(UserCreationForm):
             widget=forms.ClearableFileInput( attrs={'class' : 'file-input'}))
     class Meta(UserCreationForm):
         model = CustomUser
-        fields = ['first_name', 'last_name','email','profile_pic', 'password1', 'password2']
+        fields = ['first_name', 'last_name', "username",'email', 'password1', 'password2']
         help_texts = {
             'password1': [_("Your password can’t be too similar to your other personal information."),
                         _("Your password must contain at least 8 characters."),

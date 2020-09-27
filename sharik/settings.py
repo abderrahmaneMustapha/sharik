@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'graphene_django', 
-    "graphql_auth",
-    'api',     
+    'graphene_django',     
+    'api',   
+    "graphql_auth",  
     'django_filters',
     # refresh tokens are optional
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
@@ -62,6 +62,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sharik.urls'
+WSGI_APPLICATION = 'sharik.wsgi.application'
+
 
 TEMPLATES = [
     {
@@ -80,33 +82,58 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    "graphql_auth.backends.GraphQLAuthBackend"
-    'django.contrib.auth.backends.ModelBackend',
+    "graphql_auth.backends.GraphQLAuthBackend",
+    'django.contrib.auth.backends.ModelBackend',    
 ]
-
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_ALLOW_ANY_CLASSES": [
-        "graphql_auth.mutations.Register",
+         "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ResendActivationEmail",
+        "graphql_auth.mutations.SendPasswordResetEmail",
+        "graphql_auth.mutations.PasswordReset",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+        "graphql_auth.mutations.VerifyToken",
+        "graphql_auth.mutations.RefreshToken",
+        "graphql_auth.mutations.RevokeToken",
+        "graphql_auth.mutations.VerifySecondaryEmail",
       
     ],
  
 }
+#auth 
+GRAPHENE = {
+    'SCHEMA': 'sharik.schema.schema', # this file doesn't exist yet
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
+}
+
 
 GRAPHQL_AUTH = {
        'REGISTER_MUTATION_FIELDS' : {
         "email": "String",
-        "username": "String",
         "password1": "String",
         "password2": "String",
     }
 }
 
 
-WSGI_APPLICATION = 'sharik.wsgi.application'
+
+
+
+# Add CORS_ORIGIN_WHITELIST to allow these domains be authorized to make cross-site HTTP requests
+CORS_ORIGIN_WHITELIST = [
+    #React App domain
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+    
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -126,23 +153,9 @@ DATABASES = {
         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
     },
 }
-AUTH_USER_MODEL = 'api.Member'
 
-# Add CORS_ORIGIN_WHITELIST to allow these domains be authorized to make cross-site HTTP requests
-CORS_ORIGIN_WHITELIST = [
-    #React App domain
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-    
-]
 
-#auth 
-GRAPHENE = {
-    'SCHEMA': 'sharik.schema.schema', # this file doesn't exist yet
-    'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',
-    ],
-}
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -165,6 +178,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# custome user  settings 
+AUTH_USER_MODEL = 'api.Member'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
