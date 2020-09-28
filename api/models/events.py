@@ -60,5 +60,6 @@ class UserJoinResquest(models.Model):
     text = models.TextField(_("event description"))
     pictures = models.ImageField(_('profile pic'), upload_to='users/profile_pics',
     validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
+    accept = models.BooleanField(_("accept this request"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

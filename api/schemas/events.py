@@ -50,10 +50,14 @@ class EventPicturesMutation(DjangoModelFormMutation):
 
 class UserJoinResquestMutation(DjangoModelFormMutation):
     user_join_request =  graphene.Field(UserJoinResquestType)
-
+    accept_user_join_request = graphene.Field(UserJoinResquestType,id=graphene.ID() ,accept=graphene.Boolean())
+    
     @login_required
     def resolve_user_join_request(root, info, **kwargs):
         return root.user_join_request
+
+    def resolve_accept_user_join_request(root, info, **kwargs, accept, id):
+        return UserJoinResquest.objects.filter(id=id).update(accept=accept)
 
     class Meta:
         form_class = UserJoinResquestCreationForm
@@ -72,6 +76,8 @@ class Query(graphene.ObjectType):
     all_events = graphene.List(EventType)
     events_by_id = graphene.List(EventType, id=graphene.ID())
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
+    get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, id=graphene.ID())
+    get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_event_pictures_by_id = graphene.List(EventPicturesType, id=graphene.ID())
 
     def resolve_all_events(root, info):
@@ -84,7 +90,15 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_get_events_user_join_requests(root, info, id):
         return UserJoinResquest.objects.get(event__id=id)
+
+    @login_required
+    def get_events_user_join_requests_accepted (root, info, id):
+        return UserJoinResquest.objects.get(event__id=id, accept=True)
+
+    @login_required
+    def get_events_user_join_requests_pending (root, info, id):
+        return UserJoinResquest.objects.get(event__id=id, accept=False)
     
     @login_required
     def resolve_get_event_pictures_by_id(root, info, id):
-        return 
+        return EventPictures.objects.filter(event__id=id)
