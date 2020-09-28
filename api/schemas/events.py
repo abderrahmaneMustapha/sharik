@@ -6,7 +6,7 @@ import graphene
 from graphql_jwt.decorators import login_required
 
 from ..models import Event, EventPictures, UserJoinResquest
-from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm
+from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
 # Types
 class EventType(DjangoObjectType):
@@ -50,17 +50,25 @@ class EventPicturesMutation(DjangoModelFormMutation):
 
 class UserJoinResquestMutation(DjangoModelFormMutation):
     user_join_request =  graphene.Field(UserJoinResquestType)
-    accept_user_join_request = graphene.Field(UserJoinResquestType,id=graphene.ID() ,accept=graphene.Boolean())
     
     @login_required
     def resolve_user_join_request(root, info, **kwargs):
         return root.user_join_request
-
-    def resolve_accept_user_join_request(root, info, **kwargs, accept, id):
-        return UserJoinResquest.objects.filter(id=id).update(accept=accept)
+   
 
     class Meta:
         form_class = UserJoinResquestCreationForm
+
+
+class AcceptUserJoinResquestMutation(DjangoModelFormMutation):
+    accept_user_join_request = graphene.Field(UserJoinResquestType,id=graphene.ID() ,accept=graphene.Boolean())
+
+    @login_required
+    def resolve_accept_user_join_request(root, info, accept, id , **kwargs):
+        return UserJoinResquest.objects.filter(id=id).update(accept=accept)
+
+    class Meta:
+        form_class = UserJoinResquestAcceptForm
 
 # mutations end
 

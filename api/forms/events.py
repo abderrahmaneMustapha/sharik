@@ -15,3 +15,8 @@ class UserJoinResquestCreationForm(forms.ModelForm):
     class Meta:
         model =  UserJoinResquest
         fields = '__all__'
+
+class UserJoinResquestAcceptForm(forms.ModelForm):
+    class Meta:
+        model =  UserJoinResquest
+        fields = ['accept']
