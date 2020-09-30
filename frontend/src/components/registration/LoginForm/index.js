@@ -1,22 +1,20 @@
 import React from "react"
-import {useMutation } from 'react-apollo';
+import {useMutation } from '@apollo/client';
 
 import {
     Button,
     Form,
     FormField as Field,
-
   } from 'grommet';
 import { useFormik  } from 'formik'
 
 // me
-import {LOGIN_USER} from "../../../api/login/index"
+import {LOGIN_USER} from "../../../services/api/registration/index"
 import {SigninSchema} from "./schema/index"
 
 import {useHistory} from "react-router-dom"
 
-import {  RegistrationErrorHandler} from '../../../utils/handlers/errors/index'
-import { RegistrationSuccessHandler} from '../../../utils/handlers/success/index'
+
 // lets use this link later when we want handle errors
 //import { onError } from 'apollo-link-error';
 
@@ -60,16 +58,11 @@ function SigninForm (){
         return(
             <>
              
-                { data ?
-                (<>
-                    <RegistrationErrorHandler  data ={data.tokenAuth} errors_function="nonFieldErrors" error_field="message" />
-                    <RegistrationSuccessHandler data ={data.tokenAuth}  auth={true} message="successfuly authentificated you will be redirected soon" />
-                </>)
-                :   undefined}            
+                 
                 
 
                 
-                    <Form  >
+                <Form  >
                     <label htmlFor="email">Email</label>
                     <Field
                     id="email"
@@ -101,7 +94,7 @@ function SigninForm (){
                         type="submit">                        
                     </Button>
                     
-                    </Form>
+                </Form>
                     
             </>
         )

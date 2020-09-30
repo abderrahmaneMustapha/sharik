@@ -5,11 +5,14 @@ import Main from './domains/Main/index';
 import * as serviceWorker from './serviceWorker';
 import {apolloClient} from "./apolloClient"
 import { ApolloProvider } from '@apollo/client';
-
+import {Grommet } from 'grommet';
+import { grommet } from 'grommet/themes';
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
-      <Main />
+      <Grommet theme={grommet}>
+        <Main />
+      </Grommet>
     </ApolloProvider>
   </React.StrictMode>
   

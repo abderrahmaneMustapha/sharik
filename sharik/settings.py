@@ -117,6 +117,8 @@ GRAPHENE = {
 GRAPHQL_AUTH = {
        'REGISTER_MUTATION_FIELDS' : {
         "email": "String",
+        "first_name" : "String",
+        "last_name":  "String",
         "password1": "String",
         "password2": "String",
     }
