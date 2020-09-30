@@ -27,7 +27,7 @@ export default function SignupForm(){
          validationSchema: SignupSchema,
          onSubmit :  async values => { await new Promise( 
  
-         console.log(createUser(
+        createUser(
                      { variables: {
                          first_name: values.firstName,
                          last_name: values.lastName,
@@ -42,12 +42,27 @@ export default function SignupForm(){
                      }
                      
                  }))
-                 )
+                 
              }})
 
+             let errors = data ? data.register.errors : undefined
              return(
+                
                 <>               
-                    
+                    <div>
+                    {errors ?
+                        Object.keys(errors).map(
+                            element=>(
+                                errors[element].map(
+                                    sub=>(
+                                        <div>{sub.message}</div>
+                                    )
+                                )
+                            )
+                        )
+                        : undefined
+                    }
+                    </div>
                     
                     <Form  onSubmit={formik.handleSubmit}>
     

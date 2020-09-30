@@ -10,6 +10,7 @@ export default function Main(){
     console.log(loading)
     
     const me = data ? data.me : null
+    if(loading) return <div>loading</div>
     return (<>{me ? <Dashboard /> : <Home />}</>)
     
 }

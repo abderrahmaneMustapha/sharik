@@ -30,7 +30,6 @@ function SigninForm (){
         },
         validationSchema : SigninSchema,
         onSubmit :  async values => { await new Promise( 
-            console.log(values),
             loginUser(
                     { variables: {
                         email : values.email,
@@ -40,6 +39,7 @@ function SigninForm (){
                     if(data.data.tokenAuth.success){
                         localStorage.setItem("jwt", data.data.tokenAuth.token)
                         localStorage.setItem("jwt_refresh", data.data.tokenAuth.refreshToken)
+                        window.location.reload(false);
                     }
                     
                 })
@@ -49,17 +49,21 @@ function SigninForm (){
      
     if (loading) return (<p>{loading}</p>)
       
-    if(data){
-        if(data.tokenAuth.success){
-            history.push("/dashboard/me");
-        }
-    } 
+
     
         return(
             <>
              
                  
-                
+                <div>
+                    {
+                        data ? data.tokenAuth.errors.nonFieldErrors.map(
+                            element=>(
+                                <div>{element.message}</div>
+                            )
+                        ):undefined
+                    }
+                </div>
 
                 
                 <Form  >
