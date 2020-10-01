@@ -12,7 +12,7 @@ from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResque
 class EventType(DjangoObjectType):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at', 'profile_pic']
 
 class EventPicturesType(DjangoObjectType):
     class Meta:
