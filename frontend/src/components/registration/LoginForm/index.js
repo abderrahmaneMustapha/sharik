@@ -39,7 +39,7 @@ function SigninForm (){
                     if(data.data.tokenAuth.success){
                         localStorage.setItem("jwt", data.data.tokenAuth.token)
                         localStorage.setItem("jwt_refresh", data.data.tokenAuth.refreshToken)
-                        window.location.reload(false);
+                        history.push(`/profile/me`)
                     }
                     
                 })
@@ -50,14 +50,14 @@ function SigninForm (){
     if (loading) return (<p>{loading}</p>)
       
 
-    
+        const errors = data ? data.tokenAuth.errors : null
         return(
             <>
              
                  
                 <div>
                     {
-                        data ? data.tokenAuth.errors.nonFieldErrors.map(
+                        errors ? errors.nonFieldErrors.map(
                             element=>(
                                 <div>{element.message}</div>
                             )

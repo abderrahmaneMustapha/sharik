@@ -10,11 +10,14 @@ import {
   } from 'grommet';
 import { useFormik  } from 'formik'
 
+
+import {useHistory} from "react-router-dom"
+
+
 export default function SignupForm(){
+    let history = useHistory()
     const [createUser, { data,error,loading }  ] = useMutation(CREATE_USER)
-    console.log(data)
-    console.log(error)
-    console.log(loading)
+
     const formik  =useFormik({
  
          initialValues: {
@@ -39,6 +42,7 @@ export default function SignupForm(){
                      if(data.data.register.success){
                          localStorage.setItem("jwt", data.data.register.token)
                          localStorage.setItem("jwt_refresh", data.data.register.refreshToken)
+                         history.push(`/profile/me`)
                      }
                      
                  }))
@@ -46,6 +50,10 @@ export default function SignupForm(){
              }})
 
              let errors = data ? data.register.errors : undefined
+
+             if(error) return console.log(error)
+             if(loading) return <div>Loading</div>
+
              return(
                 
                 <>               
