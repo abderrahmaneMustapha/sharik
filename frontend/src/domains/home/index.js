@@ -1,6 +1,6 @@
 import React from "react"
-import  SigninForm from "../../components/registration/LoginForm/index"
-import  SignupForm from "../../components/registration/SignupForm/index"
+import  SigninForm from "../../components/forms/LoginForm/index"
+import  SignupForm from "../../components/forms/SignupForm/index"
 import { UserNew, UserAdmin } from 'grommet-icons';
 import {
    Tabs,
