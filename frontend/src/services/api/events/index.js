@@ -20,6 +20,11 @@ export const CREATE_EVENT = gql`
         endAt: $endAt
         profilePic: $profilePic
       }
-    )
+    ) {
+      event {
+        name
+      }
+      errors{field,messages}
+    }
   }
 `;

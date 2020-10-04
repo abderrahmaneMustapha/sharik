@@ -4,7 +4,7 @@ from django import forms
 class EventCreationForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at', 'profile_pic']
 
 class  EventPicturesCreationForm(forms.ModelForm):
     class Meta:

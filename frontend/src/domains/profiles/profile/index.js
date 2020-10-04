@@ -9,9 +9,14 @@ import { Box, Avatar } from "grommet";
 import EventCreationForm, {} from "../../../components/forms/EventCreationForm/index"
 export default function Profile() {
   const { data, loading, error } = useQuery(ME);
+
+  
+
   console.log(error);
   if (loading) return <div>loading</div>;
   if (!data.me && loading === true) return <div>Not Logged in</div>;
+  if(data.me) localStorage.setItem("user_id", data.me.pk)
+  
 
   return (
     <>

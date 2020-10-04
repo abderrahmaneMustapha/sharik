@@ -5,6 +5,8 @@ import graphene
 
 from graphql_jwt.decorators import login_required
 
+from graphene_file_upload.scalars import Upload
+
 from ..models import Event, EventPictures, UserJoinResquest
 from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
@@ -13,6 +15,7 @@ class EventType(DjangoObjectType):
     class Meta:
         model = Event
         fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at', 'profile_pic']
+  
 
 class EventPicturesType(DjangoObjectType):
     class Meta:
@@ -33,6 +36,7 @@ class EventsMutation(DjangoModelFormMutation):
 
     @login_required
     def resolve_event(root, info, **kwargs):
+        print("current event", root.event)
         return root.event
 
     class Meta:

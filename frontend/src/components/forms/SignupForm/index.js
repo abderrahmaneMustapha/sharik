@@ -118,7 +118,13 @@ export default function SignupForm() {
           <div>{formik.errors.password2}</div>
         ) : null}
 
-        <Button primary label="Submit" type="submit" color="dark-1"></Button>
+        <Button
+          primary
+          label="Submit"
+          type="submit"
+          color="dark-1"
+          onClick={formik.handleSubmit}
+        ></Button>
       </Form>
     </>
   );
