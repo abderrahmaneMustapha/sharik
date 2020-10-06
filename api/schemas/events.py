@@ -12,9 +12,10 @@ from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResque
 
 # Types
 class EventType(DjangoObjectType):
+    
     class Meta:
         model = Event
-        fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at', 'profile_pic']
+        fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at']
   
 
 class EventPicturesType(DjangoObjectType):
@@ -32,15 +33,19 @@ class UserJoinResquestType(DjangoObjectType):
 
 # mutations
 class EventsMutation(DjangoModelFormMutation):
-    event =  graphene.Field(EventType)
-
-    @login_required
-    def resolve_event(root, info, **kwargs):
-        print("current event", root.event)
-        return root.event
+    event =  graphene.Field(EventType, profile_pic = Upload(required=True))
+    
 
     class Meta:
         form_class = EventCreationForm
+    @login_required
+    def resolve_event(root, info,  profile_pic, **kwargs):
+        print(profile_pic)
+        print(info.context.POST)
+        print("current event", Event.objects.all())
+        return root.event
+
+    
 
 class EventPicturesMutation(DjangoModelFormMutation):
     events_picture =  graphene.Field(EventPicturesType)

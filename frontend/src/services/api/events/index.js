@@ -8,7 +8,7 @@ export const CREATE_EVENT = gql`
     $position: String!
     $startAt: Date!
     $endAt: Date!
-    $profilePic: String!
+    $profilePic:Upload!
   ) {
     addEvent(
       input: {

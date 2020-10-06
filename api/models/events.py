@@ -28,7 +28,7 @@ class Event(models.Model):
     end_at = models.DateField(_('event ending date'))
     status = models.IntegerField(_("Event statu"), choices = EVENT_STATUS , default=1) # specify the if this a past event  , upcoming or current
     profile_pic = models.ImageField(_('profile pic'), upload_to='users/profile_pics',
-    validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
+    validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])], null=True, blank=True)
     is_accepted = models.BooleanField(_(" accept this event"))
     archived = models.BooleanField(_("archive this event"))
     created_at = models.DateTimeField(auto_now_add=True)

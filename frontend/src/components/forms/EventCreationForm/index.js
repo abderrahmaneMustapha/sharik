@@ -19,7 +19,6 @@ export default function EventCreationForm(props) {
   if (error) console.log(error);
   if (data) console.log(data);
 
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -31,14 +30,13 @@ export default function EventCreationForm(props) {
     },
     validationSchema: EventCreationSchema,
     onSubmit: async (values) => {
-     
       await new Promise(
         console.log("onsubmit values ", values),
         console.log(
           createEvent({
             variables: {
               name: values.name,
-              eventCreator : localStorage.getItem("user_id"),
+              eventCreator: localStorage.getItem("user_id"),
               description: values.description,
               position: values.position,
               startAt: values.startAt,
@@ -54,18 +52,23 @@ export default function EventCreationForm(props) {
   if (loading) return <div>Loading ... </div>;
 
   let errors = data ? data.addEvent.errors : undefined;
-
+  console.log(errors);
   return (
     <>
       <div>
         {errors
-          ? Object.keys(errors).map((element) =>
-              errors[element].map((sub) => <div>{sub.message}</div>)
-            )
+          ? errors.map((element) => (
+              <>
+                <div> {element.field} </div>
+                {element.messages.map((sub) => (
+                  <div>{sub}</div>
+                ))}
+              </>
+            ))
           : undefined}
       </div>
 
-      <Form >
+      <Form>
         <label htmlFor="name">Event name</label>
         <Field
           id="name"
@@ -99,16 +102,15 @@ export default function EventCreationForm(props) {
           <div>{formik.errors.position}</div>
         ) : null}
 
-        <Field name="startAt" label="startAt"  value={startAt_value.toString()}>
+        <Field name="startAt" label="startAt" value={startAt_value.toString()}>
           <DateInput
             name="startAt"
-          
             format="YYYY-MM-DD"
             onChange={(value) => {
-              console.log(value)
+              console.log(value);
               let newdate = moment(value).format("YYYY-MM-DD");
               SetStartAt(newdate);
-              console.log(newdate)
+              console.log(newdate);
               formik.setFieldValue("startAt", newdate);
             }}
           />
@@ -117,14 +119,14 @@ export default function EventCreationForm(props) {
           <div>{formik.errors.startAt}</div>
         ) : null}
 
-        <Field name="endAt" label="endAt"  value={endAt_value.toString()} >
+        <Field name="endAt" label="endAt" value={endAt_value.toString()}>
           <DateInput
             name="endAt"
             value={endAt_value.toString()}
             format="YYYY-MM-DD"
             onChange={(value) => {
               let newdate = moment(value).format("YYYY-MM-DD");
-              console.log("end date ", newdate)
+              console.log("end date ", newdate);
               SetEndAt(newdate);
               formik.setFieldValue("endAt", newdate);
             }}
@@ -133,19 +135,24 @@ export default function EventCreationForm(props) {
         {formik.errors.endAt && formik.touched.endAt ? (
           <div>{formik.errors.endAt}</div>
         ) : null}
-        <input  id="profilePic" name="profilePic" type="file" onChange={event=>{
-          console.log(event.target.files[0].name)
-          formik.setFieldValue("profilePic", event.target.files[0]);
-        }} />
-    
+        <input
+          id="profilePic"
+          name="profilePic"
+          type="file"
+          onChange={(event) => {
+            console.log(event.target.files[0].name);
+            formik.setFieldValue("profilePic", event.target.files[0]);
+          }}
+        />
+
         <Button
           primary
           label="Submit"
           type="submit"
           color="dark-1"
-          onClick={event=>{
-            console.log(formik.values)
-            formik.handleSubmit()
+          onClick={(event) => {
+            console.log(formik.values);
+            formik.handleSubmit();
           }}
         ></Button>
       </Form>
