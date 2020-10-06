@@ -36,7 +36,6 @@ export default function EventCreationForm(props) {
           createEvent({
             variables: {
               name: values.name,
-              eventCreator: localStorage.getItem("user_id"),
               description: values.description,
               position: values.position,
               startAt: values.startAt,
@@ -68,7 +67,7 @@ export default function EventCreationForm(props) {
           : undefined}
       </div>
 
-      <Form>
+      <Form encType={"multipart/form-data"}>
         <label htmlFor="name">Event name</label>
         <Field
           id="name"
@@ -135,15 +134,19 @@ export default function EventCreationForm(props) {
         {formik.errors.endAt && formik.touched.endAt ? (
           <div>{formik.errors.endAt}</div>
         ) : null}
+
         <input
           id="profilePic"
           name="profilePic"
           type="file"
           onChange={(event) => {
-            console.log(event.target.files[0].name);
-            formik.setFieldValue("profilePic", event.target.files[0]);
+            console.log(event.target.files[0]);
+            formik.setFieldValue("profilePic",event.target.files[0] );
           }}
         />
+        {formik.errors.profilePic && formik.touched.profilePic ? (
+          <div>{formik.errors.profilePic}</div>
+        ) : null}
 
         <Button
           primary
@@ -151,7 +154,6 @@ export default function EventCreationForm(props) {
           type="submit"
           color="dark-1"
           onClick={(event) => {
-            console.log(formik.values);
             formik.handleSubmit();
           }}
         ></Button>

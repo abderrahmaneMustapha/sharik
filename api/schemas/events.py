@@ -7,15 +7,14 @@ from graphql_jwt.decorators import login_required
 
 from graphene_file_upload.scalars import Upload
 
-from ..models import Event, EventPictures, UserJoinResquest
+from ..models import Event, EventPictures, UserJoinResquest, Member
 from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
 # Types
 class EventType(DjangoObjectType):
-    
     class Meta:
         model = Event
-        fields = ['name', 'event_creator', 'description', 'position', 'start_at','end_at']
+        
   
 
 class EventPicturesType(DjangoObjectType):
@@ -32,20 +31,22 @@ class UserJoinResquestType(DjangoObjectType):
 #Types end
 
 # mutations
-class EventsMutation(DjangoModelFormMutation):
-    event =  graphene.Field(EventType, profile_pic = Upload(required=True))
-    
+class EventsMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String()
+        description = graphene.String()
+        position = graphene.String()
+        start_at = graphene.Date()
+        end_at = graphene.Date()
+        profile_pic =  Upload()
 
-    class Meta:
-        form_class = EventCreationForm
-    @login_required
-    def resolve_event(root, info,  profile_pic, **kwargs):
-        print(profile_pic)
-        print(info.context.POST)
-        print("current event", Event.objects.all())
-        return root.event
+    success= graphene.Boolean()
+    event = graphene.Field(EventType)
 
-    
+    def mutate(root, info, name , description, position, start_at, end_at, profile_pic):
+        event  = Event.objects.create(name=name, event_creator=Member.objects.get(pk=info.context.user.pk), description=description, position=position, start_at=start_at, end_at=end_at, profile_pic=profile_pic)
+        success=True
+        return EventsMutation(event=event, success=success)
 
 class EventPicturesMutation(DjangoModelFormMutation):
     events_picture =  graphene.Field(EventPicturesType)
