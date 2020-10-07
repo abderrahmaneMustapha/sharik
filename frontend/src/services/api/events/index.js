@@ -7,7 +7,7 @@ export const CREATE_EVENT = gql`
     $position: String!
     $startAt: Date!
     $endAt: Date!
-    $profilePic:Upload!
+    $profilePic: Upload!
   ) {
     addEvent(
       name: $name
@@ -18,9 +18,45 @@ export const CREATE_EVENT = gql`
       profilePic: $profilePic
     ) {
       event {
-        name,
+        name
         profilePic
       }
     }
   }
-`;
+`
+
+export const ALL_EVENTS = gql`
+  query {
+    allEvents {
+      name
+      slug
+      eventCreator {
+        firstName
+        lastName
+      }
+      description
+      position
+      startAt
+      endAt
+      profilePic
+    }
+  }
+`
+
+export const EVENT_BY_SLUG = gql`
+  query getEventBySlug($slug: String!) {
+    getEventBySlug(slug: $slug) {
+      name
+      slug
+      eventCreator {
+        email
+      }
+      description
+      position
+      endAt
+      startAt
+      status
+      profilePic
+    }
+  }
+`

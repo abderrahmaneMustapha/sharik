@@ -1,6 +1,6 @@
 from graphene_django import DjangoObjectType
 from graphene_django.forms.mutation import DjangoModelFormMutation
-
+from django.utils.text import slugify
 import graphene
 
 from graphql_jwt.decorators import login_required
@@ -45,6 +45,8 @@ class EventsMutation(graphene.Mutation):
 
     def mutate(root, info, name , description, position, start_at, end_at, profile_pic):
         event  = Event.objects.create(name=name, event_creator=Member.objects.get(pk=info.context.user.pk), description=description, position=position, start_at=start_at, end_at=end_at, profile_pic=profile_pic)
+        event.slug = slugify("{} {}".format(event.id ,  event.name))
+        event.save()
         success=True
         return EventsMutation(event=event, success=success)
 
@@ -82,6 +84,7 @@ class AcceptUserJoinResquestMutation(DjangoModelFormMutation):
 
 # mutations end
 
+
 ### main mutation
 class EventMutation(graphene.ObjectType):
     add_event =  EventsMutation.Field()
@@ -92,15 +95,20 @@ class EventMutation(graphene.ObjectType):
 ### main query 
 class Query(graphene.ObjectType):
     all_events = graphene.List(EventType)
+    get_event_by_slug = graphene.Field(EventType, slug=graphene.String())
     events_by_id = graphene.List(EventType, id=graphene.ID())
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_event_pictures_by_id = graphene.List(EventPicturesType, id=graphene.ID())
-
-    def resolve_all_events(root, info):
-        return Event.objects.all()
     
+    @login_required
+    def resolve_all_events(root, info):
+        return Event.objects.filter(is_accepted=True)
+    
+    @login_required
+    def resolve_get_event_by_slug(root, info, slug):
+        return Event.objects.get(slug=slug)
     @login_required
     def resolve_events_by_id(root, info, id):
         return Event.objects.get(pk=id)
