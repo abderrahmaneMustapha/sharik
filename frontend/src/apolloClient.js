@@ -1,11 +1,9 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from 'apollo-upload-client';
 ///import { onError } from "apollo-link-error";
 //import { ApolloLink, Observable } from 'apollo-link';
-const httpLink = createHttpLink({
-  uri: "http://localhost:8000/graphql/",
-});
+
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
