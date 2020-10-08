@@ -57,9 +57,16 @@ class EventPictures(models.Model):
 class UserJoinResquest(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     request_from = models.ForeignKey(Member, verbose_name=_('the user who want join this event'), on_delete=models.CASCADE)
-    text = models.TextField(_("event description"))
+    text = models.TextField(_("event description"), null=True, blank=True)
     pictures = models.ImageField(_('profile pic'), upload_to='users/profile_pics',
-    validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
+    validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])], null=True, blank=True)
     accept = models.BooleanField(_("accept this request"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        """ check if the user already sent a request to join this event """
+        user_cant_send_multi_req = UserJoinResquest.objects.filter(event=self.event, request_from=self.request_from).exists()     
+        if user_cant_send_multi_req  :
+            raise Exception('User cant send join request more than once to the same event')
+        super(UserJoinResquest, self).save(*args, **kwargs)

@@ -26,7 +26,7 @@ class EventPicturesType(DjangoObjectType):
 class UserJoinResquestType(DjangoObjectType):
     class Meta:
         model = UserJoinResquest
-        fields = '__all__'
+        fields =['id', 'event', 'request_from', 'text', "pictures", 'accept', 'created_at']
 
 #Types end
 
@@ -60,16 +60,18 @@ class EventPicturesMutation(DjangoModelFormMutation):
     class Meta:
         form_class = EventPicturesCreationForm
 
-class UserJoinResquestMutation(DjangoModelFormMutation):
-    user_join_request =  graphene.Field(UserJoinResquestType)
+class UserJoinResquestMutation(graphene.Mutation):
+    class Arguments: 
+        id = graphene.ID()
     
-    @login_required
-    def resolve_user_join_request(root, info, **kwargs):
-        return root.user_join_request
-   
+    success  = graphene.Boolean()
+    event_join_req= graphene.Field(UserJoinResquestType)
 
-    class Meta:
-        form_class = UserJoinResquestCreationForm
+    @login_required
+    def mutate(root, info, id):
+        event_join_req =UserJoinResquest.objects.create(event=Event.objects.get(id=id),request_from=info.context.user)
+        success = True
+        return UserJoinResquestMutation(event_join_req=event_join_req, success=success)
 
 
 class AcceptUserJoinResquestMutation(DjangoModelFormMutation):

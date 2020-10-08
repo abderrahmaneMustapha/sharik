@@ -23,11 +23,12 @@ export const CREATE_EVENT = gql`
       }
     }
   }
-`
+`;
 
 export const ALL_EVENTS = gql`
   query {
     allEvents {
+      id
       name
       slug
       eventCreator {
@@ -41,11 +42,12 @@ export const ALL_EVENTS = gql`
       profilePic
     }
   }
-`
+`;
 
 export const EVENT_BY_SLUG = gql`
   query getEventBySlug($slug: String!) {
     getEventBySlug(slug: $slug) {
+      id
       name
       slug
       eventCreator {
@@ -59,4 +61,17 @@ export const EVENT_BY_SLUG = gql`
       profilePic
     }
   }
-`
+`;
+
+export const EVENT_JOIN_REQUEST = gql`
+  mutation addEventUserJoinRequest($id: ID!) {
+    addEventUserJoinRequest(id: $id) {
+      success
+      eventJoinReq {
+        event {
+          name
+        }
+      }
+    }
+  }
+`;
