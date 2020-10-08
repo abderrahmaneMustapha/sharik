@@ -75,3 +75,19 @@ export const EVENT_JOIN_REQUEST = gql`
     }
   }
 `;
+
+export const GET_PENDING_EVENT_JOIN_REQUEST = gql`
+  query getEventsUserJoinRequestsPending($slug: String!) {
+    getEventsUserJoinRequestsPending(slug: $slug) {
+      id
+      requestFrom {
+        id
+        lastLogin
+        firstName
+        lastName
+        city
+        profilePic
+      }
+    }
+  }
+`;

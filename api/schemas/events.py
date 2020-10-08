@@ -101,7 +101,7 @@ class Query(graphene.ObjectType):
     events_by_id = graphene.List(EventType, id=graphene.ID())
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, id=graphene.ID())
-    get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, id=graphene.ID())
+    get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, slug=graphene.String())
     get_event_pictures_by_id = graphene.List(EventPicturesType, id=graphene.ID())
     
     @login_required
@@ -120,12 +120,12 @@ class Query(graphene.ObjectType):
         return UserJoinResquest.objects.get(event__id=id)
 
     @login_required
-    def get_events_user_join_requests_accepted (root, info, id):
-        return UserJoinResquest.objects.get(event__id=id, accept=True)
+    def resolve_get_events_user_join_requests_accepted (root, info, id):
+        return UserJoinResquest.objects.filter(event__id=id, accept=True)
 
     @login_required
-    def get_events_user_join_requests_pending (root, info, id):
-        return UserJoinResquest.objects.get(event__id=id, accept=False)
+    def resolve_get_events_user_join_requests_pending (root, info, slug):
+        return UserJoinResquest.objects.filter(event__slug=slug, accept=False)
     
     @login_required
     def resolve_get_event_pictures_by_id(root, info, id):

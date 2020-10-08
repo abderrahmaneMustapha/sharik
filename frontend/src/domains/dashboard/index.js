@@ -32,7 +32,7 @@ export default function Dashboard() {
               </Box>
             </>
           )}
-          secondaryKey=" "
+          secondaryKey="city"
           onClickItem={(event) => {
             history.push(`/events/${event.item.slug}`);
           }}
