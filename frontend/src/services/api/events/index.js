@@ -18,6 +18,7 @@ export const CREATE_EVENT = gql`
       profilePic: $profilePic
     ) {
       event {
+        id
         name
         profilePic
       }
@@ -76,6 +77,17 @@ export const EVENT_JOIN_REQUEST = gql`
   }
 `;
 
+export const ADD_EVENT_PICTURES_ON_CREATION = gql`
+  mutation addEventPicturesOnCreation($event: ID!, $pictures: Upload!) {
+    addEventPicturesOnCreation(event: $event, photos: $pictures) {
+      success
+      eventPicture {
+        id
+      }
+    }
+  }
+`;
+
 export const GET_PENDING_EVENT_JOIN_REQUEST = gql`
   query getEventsUserJoinRequestsPending($slug: String!) {
     getEventsUserJoinRequestsPending(slug: $slug) {
@@ -90,25 +102,32 @@ export const GET_PENDING_EVENT_JOIN_REQUEST = gql`
       }
     }
   }
-`
+`;
 
-export const ACCEPT_JOIN_REQUEST = gql`mutation acceptEventUserJoinRequest($id:ID!){
-  acceptEventUserJoinRequest(id: $id){
-    success,
-    eventJoinReq{id, accept}
-  }
-}`
-
-export const GET_EVENT_ACCEPTED_JOIN_REQUEST = gql`query getEventsUserJoinRequestsAccepted($slug: String!) {
-  getEventsUserJoinRequestsAccepted(slug:$slug){
-    id
-    requestFrom {
-      id
-      lastLogin
-      firstName
-      lastName
-      city
-      profilePic
+export const ACCEPT_JOIN_REQUEST = gql`
+  mutation acceptEventUserJoinRequest($id: ID!) {
+    acceptEventUserJoinRequest(id: $id) {
+      success
+      eventJoinReq {
+        id
+        accept
+      }
     }
   }
- }`
+`;
+
+export const GET_EVENT_ACCEPTED_JOIN_REQUEST = gql`
+  query getEventsUserJoinRequestsAccepted($slug: String!) {
+    getEventsUserJoinRequestsAccepted(slug: $slug) {
+      id
+      requestFrom {
+        id
+        lastLogin
+        firstName
+        lastName
+        city
+        profilePic
+      }
+    }
+  }
+`;

@@ -16,4 +16,5 @@ export const EventCreationSchema = Yup.object().shape({
   startAt: Yup.date().min(4, "Too short !").required("Required"),
   endAt: Yup.date().min(4, "Too short !").required("Required"),
   profilePic: Yup.mixed().required("Required"),
+  eventPictures: Yup.object().nullable(),
 });

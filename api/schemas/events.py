@@ -50,15 +50,18 @@ class EventsMutation(graphene.Mutation):
         success=True
         return EventsMutation(event=event, success=success)
 
-class EventPicturesMutation(DjangoModelFormMutation):
-    events_picture =  graphene.Field(EventPicturesType)
+class EventPicturesMutation(graphene.Mutation):
+    class Arguments :
+        event  = graphene.ID()
+        photos = Upload()
 
-    @login_required
-    def resolve_events_picture(root, info, **kwargs):
-        return root.events_picture
+    success = graphene.Boolean()
+    event_picture = graphene.Field(EventPicturesType)   
 
-    class Meta:
-        form_class = EventPicturesCreationForm
+    def mutate(root, info, event, photos):
+        event_picture = EventPictures.objects.create(event=Event.objects.get(id=event), pictures=photos)
+        success = True
+        return EventPicturesMutation(event_picture=event_picture, success=success)
 
 class UserJoinResquestMutation(graphene.Mutation):
     class Arguments: 
@@ -96,9 +99,10 @@ class AcceptUserJoinResquestMutation(graphene.Mutation):
 ### main mutation
 class EventMutation(graphene.ObjectType):
     add_event =  EventsMutation.Field()
-    add_event_pictures = EventPicturesMutation.Field()
+    add_event_pictures_on_creation = EventPicturesMutation.Field()
     add_event_user_join_request = UserJoinResquestMutation.Field()
     accept_event_user_join_request = AcceptUserJoinResquestMutation.Field()
+    
 
 
 ### main query 

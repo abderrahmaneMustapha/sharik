@@ -6,18 +6,20 @@ import { useFormik } from "formik";
 
 import moment from "moment";
 
-import { CREATE_EVENT } from "../../../services/api/events/index";
+import {
+  CREATE_EVENT,
+  ADD_EVENT_PICTURES_ON_CREATION,
+} from "../../../services/api/events/index";
 
 import { EventCreationSchema } from "./schema/index";
 
 export default function EventCreationForm(props) {
   const [createEvent, { data, loading, error }] = useMutation(CREATE_EVENT);
-
+  const [addEventPictures] = useMutation(ADD_EVENT_PICTURES_ON_CREATION);
   const [startAt_value, SetStartAt] = useState(new Date());
   const [endAt_value, SetEndAt] = useState(new Date());
 
   if (error) console.log(error);
-  if (data) console.log(data);
 
   const formik = useFormik({
     initialValues: {
@@ -27,23 +29,34 @@ export default function EventCreationForm(props) {
       startAt: "",
       endAt: "",
       profilePic: "",
+      eventPictures: "",
     },
     validationSchema: EventCreationSchema,
     onSubmit: async (values) => {
       await new Promise(
         console.log("onsubmit values ", values),
-        console.log(
-          createEvent({
-            variables: {
-              name: values.name,
-              description: values.description,
-              position: values.position,
-              startAt: values.startAt,
-              endAt: values.endAt,
-              profilePic: values.profilePic,
-            },
-          })
-        )
+
+        createEvent({
+          variables: {
+            name: values.name,
+            description: values.description,
+            position: values.position,
+            startAt: values.startAt,
+            endAt: values.endAt,
+            profilePic: values.profilePic,
+          },
+        }).then((data) => {
+          console.log("the id is ", data.data.addEvent.event.id)
+         Array.prototype.forEach.call( values.eventPictures, (element) => {
+           console.log(
+            addEventPictures({
+              variables: {
+                event:data.data.addEvent.event.id,
+                pictures: element,
+              },
+            }))
+          });
+        })
       );
     },
   });
@@ -51,7 +64,6 @@ export default function EventCreationForm(props) {
   if (loading) return <div>Loading ... </div>;
 
   let errors = data ? data.addEvent.errors : undefined;
-  console.log(errors);
   return (
     <>
       <div>
@@ -106,7 +118,6 @@ export default function EventCreationForm(props) {
             name="startAt"
             format="YYYY-MM-DD"
             onChange={(value) => {
-              console.log(value);
               let newdate = moment(value).format("YYYY-MM-DD");
               SetStartAt(newdate);
               console.log(newdate);
@@ -140,12 +151,24 @@ export default function EventCreationForm(props) {
           name="profilePic"
           type="file"
           onChange={(event) => {
-            console.log(event.target.files[0]);
-            formik.setFieldValue("profilePic",event.target.files[0] );
+            formik.setFieldValue("profilePic", event.target.files[0]);
           }}
         />
         {formik.errors.profilePic && formik.touched.profilePic ? (
           <div>{formik.errors.profilePic}</div>
+        ) : null}
+
+        <input
+          type="file"
+          id="eventPictures"
+          name="eventPictures"
+          onChange={(event) => {          
+            formik.setFieldValue("eventPictures",  event.target.files)
+          }}
+          multiple
+        />
+        {formik.errors.eventPictures && formik.touched.eventPictures ? (
+          <div>{formik.errors.eventPictures}</div>
         ) : null}
 
         <Button
