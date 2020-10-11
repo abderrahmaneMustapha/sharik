@@ -4,10 +4,10 @@ import {
   EVENT_BY_SLUG,
   EVENT_JOIN_REQUEST,
 } from "../../../services/api/events/index";
-import { EventJoinRequestPending } from "./joinEventsRequest/index";
+import { EventJoinRequestPending, EventJoinRequestAccept } from "./joinEventsRequest/index";
 import { ME } from "../../../services/api/registration/index";
 import { useMutation, useQuery } from "@apollo/client";
-import { Heading, Button, Box } from "grommet";
+import { Heading, Button, Box, Tab, Tabs } from "grommet";
 
 export default function EventProfile() {
   let match = useRouteMatch();
@@ -42,10 +42,17 @@ export default function EventProfile() {
       {!is_owner ? (
         <Button label="join event" onClick={handleEventJoinReq}></Button>
       ) : undefined}
+      <Tabs>
+        {is_owner ? (
+          <Tab title="join request">
+            <EventJoinRequestPending slug={match.params.slug} />
+          </Tab>
+        ) : undefined}
 
-      {is_owner ? (
-        <EventJoinRequestPending slug={match.params.slug} />
-      ) : undefined}
+        <Tab title="members">
+          <EventJoinRequestAccept slug={match.params.slug} />
+        </Tab>
+      </Tabs>
     </Box>
   );
 }

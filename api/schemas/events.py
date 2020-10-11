@@ -74,15 +74,21 @@ class UserJoinResquestMutation(graphene.Mutation):
         return UserJoinResquestMutation(event_join_req=event_join_req, success=success)
 
 
-class AcceptUserJoinResquestMutation(DjangoModelFormMutation):
-    accept_user_join_request = graphene.Field(UserJoinResquestType,id=graphene.ID() ,accept=graphene.Boolean())
+class AcceptUserJoinResquestMutation(graphene.Mutation):
+    class Arguments: 
+        id = graphene.ID()
+    
+    success  = graphene.Boolean()
+    event_join_req= graphene.Field(UserJoinResquestType)
+
 
     @login_required
-    def resolve_accept_user_join_request(root, info, accept, id , **kwargs):
-        return UserJoinResquest.objects.filter(id=id).update(accept=accept)
-
-    class Meta:
-        form_class = UserJoinResquestAcceptForm
+    def mutate(root, info, id ):
+        join_req = UserJoinResquest.objects.filter(id=id)
+        join_req.update(accept=True)
+        event_join_req = join_req.first()
+        success = True
+        return AcceptUserJoinResquestMutation(event_join_req= event_join_req, success=success)
 
 # mutations end
 
@@ -92,6 +98,7 @@ class EventMutation(graphene.ObjectType):
     add_event =  EventsMutation.Field()
     add_event_pictures = EventPicturesMutation.Field()
     add_event_user_join_request = UserJoinResquestMutation.Field()
+    accept_event_user_join_request = AcceptUserJoinResquestMutation.Field()
 
 
 ### main query 
@@ -100,7 +107,7 @@ class Query(graphene.ObjectType):
     get_event_by_slug = graphene.Field(EventType, slug=graphene.String())
     events_by_id = graphene.List(EventType, id=graphene.ID())
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
-    get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, id=graphene.ID())
+    get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, slug=graphene.String())
     get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, slug=graphene.String())
     get_event_pictures_by_id = graphene.List(EventPicturesType, id=graphene.ID())
     
@@ -120,8 +127,8 @@ class Query(graphene.ObjectType):
         return UserJoinResquest.objects.get(event__id=id)
 
     @login_required
-    def resolve_get_events_user_join_requests_accepted (root, info, id):
-        return UserJoinResquest.objects.filter(event__id=id, accept=True)
+    def resolve_get_events_user_join_requests_accepted (root, info, slug):
+        return UserJoinResquest.objects.filter(event__slug=slug, accept=True)
 
     @login_required
     def resolve_get_events_user_join_requests_pending (root, info, slug):

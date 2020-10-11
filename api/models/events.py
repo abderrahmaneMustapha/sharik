@@ -65,8 +65,15 @@ class UserJoinResquest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+
+        """ check if the user want join his own event """
+        user_want_join_his_event = self.request_from == self.event.event_creator 
+        if user_want_join_his_event:
+            raise Exception('User cant send join request to his own event')
+
         """ check if the user already sent a request to join this event """
         user_cant_send_multi_req = UserJoinResquest.objects.filter(event=self.event, request_from=self.request_from).exists()     
         if user_cant_send_multi_req  :
             raise Exception('User cant send join request more than once to the same event')
+        
         super(UserJoinResquest, self).save(*args, **kwargs)

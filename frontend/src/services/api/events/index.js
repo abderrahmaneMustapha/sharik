@@ -90,4 +90,25 @@ export const GET_PENDING_EVENT_JOIN_REQUEST = gql`
       }
     }
   }
-`;
+`
+
+export const ACCEPT_JOIN_REQUEST = gql`mutation acceptEventUserJoinRequest($id:ID!){
+  acceptEventUserJoinRequest(id: $id){
+    success,
+    eventJoinReq{id, accept}
+  }
+}`
+
+export const GET_EVENT_ACCEPTED_JOIN_REQUEST = gql`query getEventsUserJoinRequestsAccepted($slug: String!) {
+  getEventsUserJoinRequestsAccepted(slug:$slug){
+    id
+    requestFrom {
+      id
+      lastLogin
+      firstName
+      lastName
+      city
+      profilePic
+    }
+  }
+ }`
