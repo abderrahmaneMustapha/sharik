@@ -4,8 +4,10 @@ import { ALL_EVENTS } from "../../services/api/events/index";
 import { List, Image, Box, Heading, Text } from "grommet";
 import { useHistory } from "react-router-dom";
 export default function Dashboard() {
+  console.log(useQuery(ALL_EVENTS))
   const { data, loading } = useQuery(ALL_EVENTS);
   let history = useHistory();
+
   if (loading) return <div>Loading ....</div>;
   return (
     <>
