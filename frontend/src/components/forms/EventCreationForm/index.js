@@ -46,16 +46,16 @@ export default function EventCreationForm(props) {
             profilePic: values.profilePic,
           },
         }).then((data) => {
-          console.log("the id is ", data.data.addEvent.event.id)
-         Array.prototype.forEach.call( values.eventPictures, (element) => {
-           console.log(
-            addEventPictures({
-              variables: {
-                event:data.data.addEvent.event.id,
-                pictures: element,
-              },
-            }))
-          });
+          if (data.data.addEvent.success === true) {
+            Array.prototype.forEach.call(values.eventPictures, (element) => {
+              addEventPictures({
+                variables: {
+                  event: data.data.addEvent.event.id,
+                  pictures: element,
+                },
+              });
+            });
+          }
         })
       );
     },
@@ -118,9 +118,8 @@ export default function EventCreationForm(props) {
             name="startAt"
             format="YYYY-MM-DD"
             onChange={(value) => {
-              let newdate = moment(value).format("YYYY-MM-DD");
+              let newdate = moment(value.value).format("YYYY-MM-DD");
               SetStartAt(newdate);
-              console.log(newdate);
               formik.setFieldValue("startAt", newdate);
             }}
           />
@@ -135,8 +134,8 @@ export default function EventCreationForm(props) {
             value={endAt_value.toString()}
             format="YYYY-MM-DD"
             onChange={(value) => {
-              let newdate = moment(value).format("YYYY-MM-DD");
-              console.log("end date ", newdate);
+              let newdate = moment(value.value).format("YYYY-MM-DD");
+              console.log(newdate);
               SetEndAt(newdate);
               formik.setFieldValue("endAt", newdate);
             }}
@@ -162,8 +161,8 @@ export default function EventCreationForm(props) {
           type="file"
           id="eventPictures"
           name="eventPictures"
-          onChange={(event) => {          
-            formik.setFieldValue("eventPictures",  event.target.files)
+          onChange={(event) => {
+            formik.setFieldValue("eventPictures", event.target.files);
           }}
           multiple
         />
