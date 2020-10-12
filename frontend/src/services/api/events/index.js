@@ -45,6 +45,62 @@ export const ALL_EVENTS = gql`
   }
 `;
 
+export const PAST_ALL_EVENTS = gql`
+  query {
+    pastAllEvents {
+      id
+      name
+      slug
+      eventCreator {
+        firstName
+        lastName
+      }
+      description
+      position
+      startAt
+      endAt
+      profilePic
+    }
+  }
+`;
+
+export const CURRENT_ALL_EVENTS = gql`
+  query {
+    currentAllEvents {
+      id
+      name
+      slug
+      eventCreator {
+        firstName
+        lastName
+      }
+      description
+      position
+      startAt
+      endAt
+      profilePic
+    }
+  }
+`;
+
+export const UPCOMING_ALL_EVENTS = gql`
+  query {
+    upcomingAllEvents {
+      id
+      name
+      slug
+      eventCreator {
+        firstName
+        lastName
+      }
+      description
+      position
+      startAt
+      endAt
+      profilePic
+    }
+  }
+`;
 export const EVENT_BY_SLUG = gql`
   query getEventBySlug($slug: String!) {
     getEventBySlug(slug: $slug) {
