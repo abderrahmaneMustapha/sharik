@@ -1,14 +1,19 @@
+#django
+from django.utils.text import slugify
+from graphql import GraphQLError
+# graphql
 from graphene_django import DjangoObjectType
 from graphene_django.forms.mutation import DjangoModelFormMutation
-from django.utils.text import slugify
 import graphene
-
 from graphql_jwt.decorators import login_required
-
 from graphene_file_upload.scalars import Upload
 
+#me
 from ..models import Event, EventPictures, UserJoinResquest, Member
 from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
+#python
+from datetime import datetime 
+
 
 # Types
 class EventType(DjangoObjectType):
@@ -44,6 +49,13 @@ class EventsMutation(graphene.Mutation):
     event = graphene.Field(EventType)
 
     def mutate(root, info, name , description, position, start_at, end_at, profile_pic):
+        ''' check if the start data is greate than the end date and greater or equal to the current date '''
+        today = datetime.date(datetime.now())
+        if start_at < today : 
+            raise GraphQLError("the field start at must be greater than today date")
+        if (start_at > end_at) :    
+            raise GraphQLError("the field end at must be greater than start at field")
+
         event  = Event.objects.create(name=name, event_creator=Member.objects.get(pk=info.context.user.pk), description=description, position=position, start_at=start_at, end_at=end_at, profile_pic=profile_pic)
         event.slug = slugify("{} {}".format(event.id ,  event.name))
         event.save()
@@ -88,9 +100,14 @@ class AcceptUserJoinResquestMutation(graphene.Mutation):
     @login_required
     def mutate(root, info, id ):
         join_req = UserJoinResquest.objects.filter(id=id)
-        join_req.update(accept=True)
-        event_join_req = join_req.first()
-        success = True
+        if (join_req.first().get_event_owner()==info.context.user):
+            join_req.update(accept=True)
+            event_join_req = join_req.first()
+            success = True
+        else : 
+            event_join_req = None
+            success = False
+            raise Exception("Permission denied")
         return AcceptUserJoinResquestMutation(event_join_req= event_join_req, success=success)
 
 # mutations end

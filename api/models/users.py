@@ -28,7 +28,7 @@ class UserLevels(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 #Custome user model , but in the interface will be displayed as Member
 class Member(AbstractUser): 
-    username =models.CharField(_("username"), max_length=150, null=True)
+    username =models.CharField(_("username"), unique=True, max_length=150, null=True)
     first_name = models.CharField(_("first name"), max_length=150, null=True)
     last_name = models.CharField(_("last name"), max_length=150, null=True)
     date_birth = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True)

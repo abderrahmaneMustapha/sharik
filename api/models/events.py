@@ -48,7 +48,7 @@ class Event(models.Model):
 
 class EventPictures(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
-    pictures = models.ImageField(_('profile pic'), upload_to='users/profile_pics',
+    pictures = models.ImageField(_('profile pic'), upload_to='users/event_pictures/{}'.format(event.name),
     validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,7 +63,8 @@ class UserJoinResquest(models.Model):
     accept = models.BooleanField(_("accept this request"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def get_event_owner(self):
+        return self.event.event_creator
     def save(self, *args, **kwargs):
 
         """ check if the user want join his own event """
