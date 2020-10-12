@@ -125,6 +125,9 @@ class EventMutation(graphene.ObjectType):
 ### main query 
 class Query(graphene.ObjectType):
     all_events = graphene.List(EventType)
+    current_all_events =  graphene.List(EventType)
+    upcoming_all_events =  graphene.List(EventType)
+    past_all_events =  graphene.List(EventType)
     get_event_by_slug = graphene.Field(EventType, slug=graphene.String())
     events_by_id = graphene.List(EventType, id=graphene.ID())
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
@@ -135,6 +138,20 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_all_events(root, info):
         return Event.objects.filter(is_accepted=True)
+    
+    def resolve_current_all_events(root, info):
+        today = datetime.date(datetime.now())
+        return Event.objects.filter(is_accepted=True, start_at__lte=today, end_at__gte=today)
+    
+ 
+    def resolve_past_all_events(root, info):
+        today = datetime.date(datetime.now())
+        return Event.objects.filter(is_accepted=True, start_at__lt=today, end_at__lt=today)
+
+    @login_required
+    def resolve_upcoming_all_events(root, info):
+        today = datetime.date(datetime.now())  
+        return Event.objects.filter(is_accepted=True, start_at__gt=today,end_at__gt=today)
     
     @login_required
     def resolve_get_event_by_slug(root, info, slug):
