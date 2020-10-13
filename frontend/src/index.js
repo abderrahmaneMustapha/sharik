@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./index.css";
@@ -8,6 +9,7 @@ import Main from "./domains/Main/index";
 import Profile from "./domains/profiles/profile/index";
 import Profiles from "./domains/profiles/profiles/index";
 import EventProfile from "./domains/events/profile/index";
+
 import * as serviceWorker from "./serviceWorker";
 
 import { apolloClient } from "./apolloClient";

@@ -150,6 +150,7 @@ export const GET_PENDING_EVENT_JOIN_REQUEST = gql`
       id
       requestFrom {
         id
+        key
         lastLogin
         firstName
         lastName
