@@ -34,6 +34,7 @@ export default function EventProfile() {
   const current_user_email = localStorage.getItem("user_email");
   const event = data.getEventBySlug;
   const me = data_me.me;
+  
   const is_owner = me.email === current_user_email;
 
   return (

@@ -15,7 +15,8 @@ export default function Profile() {
   console.log(error);
   if (loading) return <div>loading</div>;
   if (!data.me && loading === true) return <div>Not Logged in</div>;
-  if(data.me) localStorage.setItem("user_id", data.me.pk)
+  if(data.me) localStorage.setItem("user_email", data.me.email)
+
   
 
   return (

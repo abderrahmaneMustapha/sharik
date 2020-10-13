@@ -84,8 +84,16 @@ class UserJoinResquestMutation(graphene.Mutation):
 
     @login_required
     def mutate(root, info, id):
-        event_join_req =UserJoinResquest.objects.create(event=Event.objects.get(id=id),request_from=info.context.user)
-        success = True
+        today = datetime.date(datetime.now())
+        event = Event.objects.filter(id=id).first()
+        end_at = event.get_event_end_at()
+        if today > end_at :
+            raise Exception(" Cant join past events")
+            event_join_req =None
+            success = False
+        else:
+            event_join_req =UserJoinResquest.objects.create(event=event, request_from=info.context.user)
+            success = True
         return UserJoinResquestMutation(event_join_req=event_join_req, success=success)
 
 

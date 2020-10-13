@@ -33,7 +33,8 @@ class Event(models.Model):
     archived = models.BooleanField(_("archive this event"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def get_event_end_at(self):
+        return self.end_at
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"
@@ -65,6 +66,7 @@ class UserJoinResquest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def get_event_owner(self):
         return self.event.event_creator
+
     def save(self, *args, **kwargs):
 
         """ check if the user want join his own event """
