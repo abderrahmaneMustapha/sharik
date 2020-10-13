@@ -46,7 +46,7 @@ export function EventJoinRequestPending(props) {
           <Button
             label="check user profile"
             onClick={() => {
-              history.push(`/profiles/${item.requestFrom.username}`);
+              history.push(`/profiles/${item.requestFrom.key}`);
             }}
           />
         </>
@@ -87,7 +87,7 @@ export function EventJoinRequestAccept(props) {
           </>
         )}
         onClickItem={(event)=>{
-            history.push(`/profiles/${event.item.requestFrom.username}`)
+            history.push(`/profiles/${event.item.requestFrom.key}`)
         }}
         data={data}
       />

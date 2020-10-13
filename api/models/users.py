@@ -7,7 +7,8 @@ from django.core.validators import FileExtensionValidator
 #package
 from phonenumber_field.modelfields import PhoneNumberField
 
-
+#python
+import uuid
 
 #me
 from ..validators import validate_image_size
@@ -29,6 +30,10 @@ class UserLevels(models.Model):
 #Custome user model , but in the interface will be displayed as Member
 class Member(AbstractUser): 
     username =models.CharField(_("username"), unique=True, max_length=150, null=True)
+    key = models.UUIDField(  
+        unique=True,
+        default = uuid.uuid4, 
+        editable = True)
     first_name = models.CharField(_("first name"), max_length=150, null=True)
     last_name = models.CharField(_("last name"), max_length=150, null=True)
     date_birth = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True)

@@ -16,7 +16,7 @@ function Home(){
                 title={
                 <RichTabTitle
                     icon={<UserAdmin color="accent-2" />}
-                    label="Personal Data"
+                    label="Login"
                 />
                 }
             >   
@@ -28,7 +28,7 @@ function Home(){
                 title={
                 <RichTabTitle
                     icon={<UserNew color="accent-2" />}
-                    label="Personal Data"
+                    label="New user"
                 />
                 }
             >   

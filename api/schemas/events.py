@@ -170,6 +170,9 @@ class Query(graphene.ObjectType):
 
     @login_required
     def resolve_get_events_user_join_requests_pending (root, info, slug):
+        if (UserJoinResquest.objects.filter(event__slug=slug).first().get_event_owner() != info.context.user):
+            raise GraphQLError("Permission denied")
+            return None
         return UserJoinResquest.objects.filter(event__slug=slug, accept=False)
     
     @login_required

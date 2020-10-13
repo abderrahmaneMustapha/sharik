@@ -178,6 +178,7 @@ export const GET_EVENT_ACCEPTED_JOIN_REQUEST = gql`
       id
       requestFrom {
         id
+        key
         lastLogin
         firstName
         lastName
