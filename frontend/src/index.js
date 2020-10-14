@@ -21,7 +21,7 @@ import { grommet } from "grommet/themes";
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
-      <Grommet theme={grommet}>
+      <Grommet theme={grommet}  full={true} >
         <Router>
           <Switch>
             <Route exact path="/" component={Main} />

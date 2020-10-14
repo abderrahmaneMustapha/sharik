@@ -50,8 +50,7 @@ const NotificationAlert = () => {
 
 const SidebarFooter = (props) => (
   <Box>
-    <NotificationAlert />
-
+   
     {props.type === "profile" ? <Avatar margin="small" src={src} /> : undefined}
   </Box>
 );
@@ -69,6 +68,7 @@ const SidebarHeader = () => (
 );
 
 const iconsMap = (color) => [
+  
   <Home color={color} />,
   <Book color={color} />,
   <Contact color={color} />,
@@ -94,6 +94,7 @@ const SidebarButton = ({ iconName, index }) => {
             {iconsMap(hover ? "black" : "white")[index]}
           </Box>
         )}
+        
       </Button>
       {ref.current && over && (
         <Drop align={{ left: "right" }} target={ref.current} plain>
@@ -113,7 +114,7 @@ const SidebarButton = ({ iconName, index }) => {
 };
 
 export const TooltipsSidebar = (props) => (
-  <Box direction="row" height="100vh">
+  <Box direction="row"  >
     <Sidebar
       overflow="auto"
       background="brand"
@@ -121,11 +122,13 @@ export const TooltipsSidebar = (props) => (
       footer={<SidebarFooter type={props.type} />}
       pad="none"
       height={{ min: "100%" }}
+      fixed={true}
     >
-      <Nav>
+      <Nav fixed={true}>
         {["Home", "About us", "Contact us"].map((iconName, index) => (
           <SidebarButton key={iconName} iconName={iconName} index={index} />
         ))}
+        <NotificationAlert />
       </Nav>
     </Sidebar>
   </Box>
