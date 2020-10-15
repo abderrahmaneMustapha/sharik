@@ -11,9 +11,12 @@ from graphene_file_upload.scalars import Upload
 #me
 from ..models import Event, EventPictures, UserJoinResquest, Member
 from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
+
 #python
 from datetime import datetime 
 
+#notifications
+from notifications.signals import notify
 
 # Types
 class EventType(DjangoObjectType):
@@ -87,11 +90,13 @@ class UserJoinResquestMutation(graphene.Mutation):
         today = datetime.date(datetime.now())
         event = Event.objects.filter(id=id).first()
         end_at = event.get_event_end_at()
+      
         if today > end_at :
             raise Exception(" Cant join past events")
             event_join_req =None
             success = False
         else:
+            notify.send(event.get_event_creator(), recipient=info.context.user, verb=' {} want to join your event'.format(event.get_event_creator()))
             event_join_req =UserJoinResquest.objects.create(event=event, request_from=info.context.user)
             success = True
         return UserJoinResquestMutation(event_join_req=event_join_req, success=success)

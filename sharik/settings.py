@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     # refresh tokens are optional
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    
-     
+    'notifications',     
        
     
 ]

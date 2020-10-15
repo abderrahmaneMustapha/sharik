@@ -2,7 +2,7 @@ import graphene
 
 from graphql_auth.schema import UserQuery, MeQuery
 
-from api.schemas import EventMutation , Query as EventQuery, UserMutation
+from api.schemas import EventMutation , Query as EventQuery, UserMutation, MemberQuery
 
 from graphql_auth import mutations
 
@@ -26,7 +26,7 @@ class AuthMutation(graphene.ObjectType):
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
 
-class Query(UserQuery, EventQuery, MeQuery, graphene.ObjectType):
+class Query(UserQuery, EventQuery, MemberQuery, MeQuery, graphene.ObjectType):
     pass
 
 class Mutation(AuthMutation, UserMutation, EventMutation, graphene.ObjectType):

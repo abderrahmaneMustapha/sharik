@@ -35,6 +35,8 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def get_event_end_at(self):
         return self.end_at
+    def get_event_creator(self):
+        return self.event_creator 
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"
