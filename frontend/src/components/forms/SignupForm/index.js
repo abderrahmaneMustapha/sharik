@@ -122,7 +122,7 @@ export default function SignupForm() {
           primary
           label="Submit"
           type="submit"
-          color="dark-1"
+          color="green-1"
           onClick={formik.handleSubmit}
         ></Button>
       </Form>

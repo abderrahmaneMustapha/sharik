@@ -95,7 +95,6 @@ function SigninForm() {
 
                 <Button
                     primary
-                    color="dark-1"
                     label="Submit"
                     onClick={formik.handleSubmit}
                     type="submit">

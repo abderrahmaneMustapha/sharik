@@ -174,7 +174,6 @@ export default function EventCreationForm(props) {
           primary
           label="Submit"
           type="submit"
-          color="dark-1"
           onClick={(event) => {
             formik.handleSubmit();
           }}

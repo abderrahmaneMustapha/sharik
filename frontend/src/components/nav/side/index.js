@@ -58,7 +58,7 @@ const SidebarFooter = (props) => (
 const SidebarHeader = () => (
   <Box pad="small">
     <Avatar
-      background="linear-gradient(#6FFFB0 0%, #7D4CDB 100%)"
+      background="linear-gradient(#6BCB9B 0%, #76BC4E 100%)"
       border={{ color: "white", size: "small" }}
       round="medium"
     >
@@ -91,7 +91,7 @@ const SidebarButton = ({ iconName, index }) => {
       >
         {({ hover }) => (
           <Box pad={{ vertical: "small" }} align="center">
-            {iconsMap(hover ? "black" : "white")[index]}
+            {iconsMap(hover ? "black" : "brand")[index]}
           </Box>
         )}
         
@@ -117,7 +117,7 @@ export const TooltipsSidebar = (props) => (
   <Box direction="row"  >
     <Sidebar
       overflow="auto"
-      background="brand"
+      background="white"
       header={<SidebarHeader />}
       footer={<SidebarFooter type={props.type} />}
       pad="none"
