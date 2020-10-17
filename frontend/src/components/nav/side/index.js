@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Avatar, Button, Box, Drop, Nav, Stack, Sidebar } from "grommet";
 
-import { Book, Home, Heroku, Notification, Contact } from "grommet-icons";
+import { Book, Home, Heroku,Rss, Contact } from "grommet-icons";
 
 const src = "//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80";
 
 const NotificationIcon = () => (
   <Stack anchor="top-right">
-    <Notification />
+    <Rss />
     <Box background="accent-1" pad="xsmall" round responsive={false} />
   </Stack>
 );

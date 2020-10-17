@@ -35,7 +35,7 @@ export default function EventProfile() {
   const event = data.getEventBySlug;
   
   const is_owner = event.eventCreator.email === current_user_email;
-
+  
   return (
     <Box>
       <Heading>{event.name}</Heading>

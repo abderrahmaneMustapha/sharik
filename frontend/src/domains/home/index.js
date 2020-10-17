@@ -42,7 +42,7 @@ const Cards = () => {
 };
 function Home() {
     const [open, setOpen] = React.useState(false);
-    const [select, setSelect] = React.useState("");
+   
 
     const onOpen = () => setOpen(true);
 
