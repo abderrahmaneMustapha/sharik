@@ -96,7 +96,7 @@ class UserJoinResquestMutation(graphene.Mutation):
             event_join_req =None
             success = False
         else:
-            notify.send(event.get_event_creator(), recipient=info.context.user, verb=' {} want to join your event'.format(event.get_event_creator()))
+            notify.send(info.context.user , recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user))
             event_join_req =UserJoinResquest.objects.create(event=event, request_from=info.context.user)
             success = True
         return UserJoinResquestMutation(event_join_req=event_join_req, success=success)

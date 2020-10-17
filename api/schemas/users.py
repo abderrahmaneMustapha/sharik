@@ -40,10 +40,12 @@ class UserMutation(graphene.ObjectType):
 ### main query
 class Query(graphene.ObjectType):
     all_members = graphene.List(MembersType)
-    get_user_notifications = graphene.List(NotificationsType, id=graphene.ID())
+    get_user_notifications_unread = graphene.List(NotificationsType)
 
     def resolve_all_members(root, info):
         return Member.objects.all()
 
-    def resolve_get_user_notifications(root, info, id):
-        return Member.objects.get(id=id).notifications.unread()
+    @login_required
+    def resolve_get_user_notifications_unread(root, info):
+        print(Member.objects.get(id=info.context.user.pk).notifications.unread())
+        return Member.objects.get(id=info.context.user.pk).notifications.unread()
