@@ -5,7 +5,7 @@ import {
     UPCOMING_ALL_EVENTS,
 } from "../../../services/api/events/index";
 import { useQuery } from "@apollo/client";
-import { List, Image, Box, Heading, Text } from "grommet";
+import { List, Image, Box, Heading, Text, Button } from "grommet";
 import { useHistory } from "react-router-dom";
 
 export function CurrentEvents() {
@@ -39,10 +39,17 @@ export function CurrentEvents() {
                     </Box>
                 </>
             )}
-            secondaryKey="city"
-            onClickItem={(event) => {
-                history.push(`/events/${event.item.slug}`);
-            }}
+            secondaryKey={(item) => (
+                <>
+                    <Text>{item.city}</Text>
+                    <Button
+                        label="Event page"
+                        onClick={() => {
+                            history.push(`/events/${item.slug}`);
+                        }}
+                    />
+                </>
+            )}
             data={data.currentAllEvents}
         />
     );
