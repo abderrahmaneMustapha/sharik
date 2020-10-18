@@ -8,6 +8,9 @@ import graphene
 from graphql_jwt.decorators import login_required
 from graphene_file_upload.scalars import Upload
 
+#notifications
+from notifications.models import Notification
+
 #me
 from ..models import Event, EventPictures, UserJoinResquest, Member
 from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
@@ -96,7 +99,10 @@ class UserJoinResquestMutation(graphene.Mutation):
             event_join_req =None
             success = False
         else:
-            notify.send(info.context.user , recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user))
+            notification = Notification.objects.filter(recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user)).exists()
+            print(notification)
+            if not notification : 
+                notify.send(info.context.user , recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user))
             event_join_req =UserJoinResquest.objects.create(event=event, request_from=info.context.user)
             success = True
         return UserJoinResquestMutation(event_join_req=event_join_req, success=success)
