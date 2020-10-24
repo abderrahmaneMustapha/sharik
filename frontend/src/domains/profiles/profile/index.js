@@ -15,8 +15,8 @@ import {
     Card,
     CardBody,
     CardHeader,
-    CardFooter,
-    List
+    List,
+    Layer
 } from "grommet";
 import {
     Facebook,
@@ -25,7 +25,8 @@ import {
     Linkedin,
     Medium,
     Link,
-
+    DocumentTime, 
+    Close,
 } from "grommet-icons";
 
 import { TopRightNav } from "../../../components/nav/top/index";
@@ -41,6 +42,49 @@ const social_media_accounts = [
     <Medium />,
     <Link />,
 ];
+
+function CreateEvent(){
+    const [open, setOpen] = React.useState(false);
+  
+    const onOpen = () => setOpen(true);
+  
+    const onClose = () => setOpen(undefined);
+    return(
+        <>
+         <Button icon={<DocumentTime  />} label={(
+             <Text><strong>Add</strong></Text>
+         )
+         } onClick={onOpen} />
+        {open && (
+          <Layer
+            position="right"
+            full="vertical"
+            
+            modal
+            onClickOutside={onClose}
+            onEsc={onClose}
+          >
+            <Box
+              fill="vertical"
+              width="100vw"
+              overflow="auto"
+              pad="medium"
+              onSubmit={onClose}
+            >
+              <Box flex={false} direction="row" justify="between">
+                <Heading level={2} margin="none">
+                  Add new event
+                </Heading>
+                <Button icon={<Close />} onClick={onClose} />
+              </Box>
+                <EventCreationForm />
+              
+            </Box>
+          </Layer>
+        )}
+        </>
+    )
+}
 
 function Bio() {
     return (
@@ -170,6 +214,8 @@ export default function Profile() {
                             <Text margin={{ top: "1em", bottom: "1em" }}>
                                 Tiaret, Algeria
                             </Text>
+
+                           <CreateEvent />
                         </Box>
                     </Box>
                 </Header>
@@ -185,7 +231,7 @@ export default function Profile() {
                         <SideBar gridArea="side" />
                     </Grid>
                 </Box>
-                <EventCreationForm gridArea="form" />
+              
             </>
         );
     }

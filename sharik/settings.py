@@ -44,9 +44,10 @@ INSTALLED_APPS = [
     'django_filters',
     # refresh tokens are optional
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    'notifications',     
-       
+    'notifications', 
     
+    # to create background tasks 
+    'background_task',    
 ]
 
 MIDDLEWARE = [
