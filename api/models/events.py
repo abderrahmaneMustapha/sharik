@@ -31,6 +31,7 @@ class Event(models.Model):
     validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])], null=True, blank=True)
     is_accepted = models.BooleanField(_(" accept this event"), default=False)
     archived = models.BooleanField(_("archive this event"), default=False)
+    done =  models.BooleanField(_("this event is done"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def get_event_end_at(self):
@@ -53,6 +54,8 @@ class EventPictures(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     pictures = models.ImageField(_('profile pic'), upload_to='users/event_pictures/{}'.format(event.name),
     validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
+    on_creation  = models.BooleanField(_("event pictures when the user created the event"), default=False)
+    on_end = models.BooleanField(_("event pictures when the event end"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
