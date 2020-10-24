@@ -3,22 +3,97 @@ import React from "react";
 import { ME } from "../../../services/api/registration/index";
 
 import { useQuery } from "@apollo/client";
+import {GET_CURRENT_USER_RECENT_EVENTS} from "../../../services/api/events/index"
+import {
+    Box,
+    Avatar,
+    Header,
+    Grid,
+    Heading,
+    Text,
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    CardFooter,
+    List
+} from "grommet";
+import {
+    Facebook,
+    Github,
+    Instagram,
+    Linkedin,
+    Medium,
+    Link,
 
-import { Box, Avatar, Header, Grid, Heading, Text, Button } from "grommet";
-import { Facebook, Github, Instagram, Linkedin, Medium, Link } from "grommet-icons";
+} from "grommet-icons";
 
 import { TopRightNav } from "../../../components/nav/top/index";
 import EventCreationForm from "../../../components/forms/EventCreationForm/index";
+import {useHistory} from "react-router-dom"
 
 const tags = ["gaming", "reading", "outdoors", "maths"];
 const social_media_accounts = [
     <Facebook />,
-    <Github  />,
+    <Github />,
     <Instagram />,
     <Linkedin />,
     <Medium />,
-    <Link />
+    <Link />,
 ];
+
+function Bio() {
+    return (
+        <Card height="fit-content" pad="medium">
+            <CardHeader>
+                <Heading level="3" >Bio : </Heading>
+            </CardHeader>
+            <CardBody height="fit-content" pad="small">
+                <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    at ex lectus. Pellentesque ornare massa eget sem molestie,
+                    ac pretium purus venenatis. Donec et tempor ligula, sed
+                    vehicula nulla. Vestibulum at purus eget massa vulputate
+                    eleifend accumsan vel metus. Maecenas imperdiet sollicitudin
+                    diam. Donec tincidunt pellentesque justo id aliquet. Ut sit
+                    amet velit vel ante tristique iaculis. Nulla sed metus id
+                    turpis pellentesque imperdiet. Pellentesque ultricies
+                    consequat lobortis. Vivamus et tortor tortor. Suspendisse
+                    commodo ligula eget magna venenatis feugiat. Donec porttitor
+                    velit at porta lobortis. Maecenas eget sodales mauris.
+                    Nullam condimentum scelerisque volutpat. Sed et magna sit
+                    amet lorem vestibulum efficitur. Sed accumsan eget nisl ut
+                    efficitur.
+                </Text>
+            </CardBody>
+        </Card>
+    );
+}
+
+function SideBar() {
+    const {data , loading}= useQuery(GET_CURRENT_USER_RECENT_EVENTS)
+    const history = useHistory()
+
+    if (loading) return <div>Loading .... </div>
+    return (
+        <Card height="fit-content" pad="medium">
+            <CardHeader>
+                <Heading level="3">Recent events</Heading>
+            </CardHeader>
+            <CardBody height="fit-content" pad="small">
+                <List
+                    primaryKey="name"
+                    data={data.getRecentUserEvents}
+                    onClickItem={(event)=>{
+                    history.push(`/events/${event.item.slug}`)
+                    }}
+                    border="bottom"
+
+                />
+            </CardBody>
+        </Card>
+    );
+}
 export default function Profile() {
     const { data, loading, error } = useQuery(ME);
 
@@ -92,23 +167,25 @@ export default function Profile() {
                                     <>{element}</>
                                 ))}
                             </Box>
-                            <Text margin={{top:"1em", bottom:"1em"}}>Tiaret, Algeria</Text>
+                            <Text margin={{ top: "1em", bottom: "1em" }}>
+                                Tiaret, Algeria
+                            </Text>
                         </Box>
                     </Box>
                 </Header>
 
-                <EventCreationForm />
-
-                <Grid
-                    rows={["xxsmall", "medium", "xsmall"]}
-                    columns={["1/4", "3/4"]}
-                    areas={[
-                        ["header", "header"],
-                        ["sidebar", "main"],
-                        ["footer", "footer"],
-                    ]}
-                    gap="small"
-                ></Grid>
+                <Box width="90%" margin={{ left: "auto", right: "auto" ,  top:"4em"}}>
+                    <Grid
+                        rows={["xmedium"]}
+                        columns={["60%", "40%"]}
+                        areas={[["bio", "side"]]}
+                        gap="small"
+                    >
+                        <Bio gridArea="bio" />
+                        <SideBar gridArea="side" />
+                    </Grid>
+                </Box>
+                <EventCreationForm gridArea="form" />
             </>
         );
     }

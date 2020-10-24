@@ -202,3 +202,11 @@ export const GET_USER_NOTIFICATIONS_UNREAD = gql`
         }
     }
 `;
+
+export const GET_CURRENT_USER_RECENT_EVENTS = gql`
+query{
+    getRecentUserEvents{
+      name
+      slug
+    }
+  }`

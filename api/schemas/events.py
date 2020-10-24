@@ -100,7 +100,6 @@ class UserJoinResquestMutation(graphene.Mutation):
             success = False
         else:
             notification = Notification.objects.filter(recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user)).exists()
-            print(notification)
             if not notification : 
                 notify.send(info.context.user , recipient=event.get_event_creator(), verb=' {} want to join your event'.format(info.context.user))
             event_join_req =UserJoinResquest.objects.create(event=event, request_from=info.context.user)
@@ -146,14 +145,17 @@ class Query(graphene.ObjectType):
     all_events = graphene.List(EventType)
     current_all_events =  graphene.List(EventType)
     upcoming_all_events =  graphene.List(EventType)
+    get_recent_user_events = graphene.List(EventType)
     past_all_events =  graphene.List(EventType)
     get_event_by_slug = graphene.Field(EventType, slug=graphene.String())
     events_by_id = graphene.List(EventType, id=graphene.ID())
+
     get_events_user_join_requests = graphene.List(UserJoinResquestType, id=graphene.ID())
     get_events_user_join_requests_accepted = graphene.List(UserJoinResquestType, slug=graphene.String())
     get_events_user_join_requests_pending = graphene.List(UserJoinResquestType, slug=graphene.String())
     get_event_pictures_by_id = graphene.List(EventPicturesType, id=graphene.ID())
     
+
     @login_required
     def resolve_all_events(root, info):
         return Event.objects.filter(is_accepted=True)
@@ -172,6 +174,9 @@ class Query(graphene.ObjectType):
         today = datetime.date(datetime.now())  
         return Event.objects.filter(is_accepted=True, start_at__gt=today,end_at__gt=today)
     
+    @login_required 
+    def resolve_get_recent_user_events(root, info):
+        return Event.objects.filter(event_creator__pk=info.context.user.pk).order_by('-created_at')[:4]
     @login_required
     def resolve_get_event_by_slug(root, info, slug):
         return Event.objects.get(slug=slug)
