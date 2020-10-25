@@ -77,7 +77,7 @@ class EventPicturesMutation(graphene.Mutation):
     event_picture = graphene.Field(EventPicturesType)   
 
     def mutate(root, info, event, photos):
-        event_picture = EventPictures.objects.create(event=Event.objects.get(id=event), pictures=photos)
+        event_picture = EventPictures.objects.create(event=Event.objects.get(id=event), pictures=photos, on_creation=True)
         success = True
         return EventPicturesMutation(event_picture=event_picture, success=success)
 
