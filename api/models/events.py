@@ -50,6 +50,12 @@ class Event(models.Model):
     def __str__(self):
         return str(self.name)
 
+
+class EventEndConfirmation(models.Model):
+    event  =  models.ForeignKey(Event, verbose_name=_("event confirmed"), on_delete=models.CASCADE)
+    text  =  models.TextField(_('event text'))
+    accepted  = models.BooleanField(_('event confirmation accepted'), null=True)
+
 class EventPictures(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     pictures = models.ImageField(_('profile pic'), upload_to='users/event_pictures/{}'.format(event.name),

@@ -4,7 +4,7 @@ from django import forms
 
 #me
 from ..validators import validate_image_size
-from ..models import Event,  EventPictures, UserJoinResquest
+from ..models import Event,  EventPictures, UserJoinResquest,EventEndConfirmation
 
 class EventCreationForm(forms.ModelForm):
     profile_pic = forms.ImageField(validators=[validate_image_size, FileExtensionValidator(['jpg','jpeg','png', 'webp', 'svg'])])
@@ -26,3 +26,8 @@ class UserJoinResquestAcceptForm(forms.ModelForm):
     class Meta:
         model =  UserJoinResquest
         fields = ['accept']
+
+class EventEndConfirmationForm(forms.ModelForm):
+    class Meta : 
+        model = EventEndConfirmation
+        fields = ['text']

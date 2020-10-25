@@ -12,8 +12,8 @@ from graphene_file_upload.scalars import Upload
 from notifications.models import Notification
 
 #me
-from ..models import Event, EventPictures, UserJoinResquest, Member
-from ..forms import EventCreationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
+from ..models import Event, EventPictures, UserJoinResquest, Member,  EventEndConfirmation
+from ..forms import EventCreationForm, EventEndConfirmationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
 #python
 from datetime import datetime 
@@ -39,6 +39,11 @@ class UserJoinResquestType(DjangoObjectType):
         model = UserJoinResquest
         fields =['id', 'event', 'request_from', 'text', "pictures", 'accept', 'created_at']
 
+
+class  EventEndConfirmationType(DjangoObjectType):
+    class Meta : 
+        model = EventEndConfirmation
+        fields = ['text']
 #Types end
 
 # mutations
@@ -81,6 +86,18 @@ class EventPicturesMutation(graphene.Mutation):
         success = True
         return EventPicturesMutation(event_picture=event_picture, success=success)
 
+class EventEndPicturesMutation(graphene.Mutation):
+    class Arguments :
+        event  = graphene.ID()
+        photos = Upload()
+
+    success = graphene.Boolean()
+    event_picture = graphene.Field(EventPicturesType)   
+
+    def mutate(root, info, event, photos):
+        event_picture = EventPictures.objects.create(event=Event.objects.get(id=event), pictures=photos, on_end=True)
+        success = True
+        return EventPicturesMutation(event_picture=event_picture, success=success)
 class UserJoinResquestMutation(graphene.Mutation):
     class Arguments: 
         id = graphene.ID()
@@ -128,6 +145,11 @@ class AcceptUserJoinResquestMutation(graphene.Mutation):
             raise Exception("Permission denied")
         return AcceptUserJoinResquestMutation(event_join_req= event_join_req, success=success)
 
+class  EventEndConfirmationMutations(DjangoModelFormMutation):
+    event_end_confirmation = graphene.Field(EventEndConfirmationType)
+    class Meta:
+        form_class = EventEndConfirmationForm
+
 # mutations end
 
 
@@ -135,10 +157,11 @@ class AcceptUserJoinResquestMutation(graphene.Mutation):
 class EventMutation(graphene.ObjectType):
     add_event =  EventsMutation.Field()
     add_event_pictures_on_creation = EventPicturesMutation.Field()
+    add_event_pictures_on_end = EventEndPicturesMutation.Field()
     add_event_user_join_request = UserJoinResquestMutation.Field()
     accept_event_user_join_request = AcceptUserJoinResquestMutation.Field()
+    event_end_confirmation =  EventEndConfirmationMutations.Field()
     
-
 
 ### main query 
 class Query(graphene.ObjectType):
