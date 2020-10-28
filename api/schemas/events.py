@@ -226,6 +226,7 @@ class Query(graphene.ObjectType):
     
     @login_required
     def resolve_get_event_pictures_by_id_on_creation(root, info, id):
+        
         return EventPictures.objects.filter(event__id=id, on_creation=True)
     
     @login_required

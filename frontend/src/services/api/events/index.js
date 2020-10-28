@@ -121,8 +121,8 @@ export const EVENT_BY_SLUG = gql`
 `;
 
 export const GET_EVENT_PICTURES_BY_ID_ON_END = gql`
-    query {
-        getEventPicturesByIdOnEnd(id: 1) {
+    query  getEventPicturesByIdOnEnd($id: ID!) {
+        getEventPicturesByIdOnEnd(id: $id) {
             id
             pictures
         }
@@ -130,8 +130,8 @@ export const GET_EVENT_PICTURES_BY_ID_ON_END = gql`
 `;
 
 export const GET_EVENT_PICTURES_BY_ID_ON_CREATION = gql`
-    query {
-        getEventPicturesByIdOnCreation(id: 1) {
+    query getEventPicturesByIdOnCreation($id:ID!) {
+        getEventPicturesByIdOnCreation(id:$id) {
             id
             pictures
         }

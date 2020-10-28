@@ -4,7 +4,7 @@ import {
   EVENT_BY_SLUG,
   EVENT_JOIN_REQUEST,
 } from "../../../services/api/events/index";
-import { EventJoinRequestPending, EventJoinRequestAccept } from "./joinEventsRequest/index";
+import { EventJoinRequestPending, EventJoinRequestAccept, EventPicturesOnCreation } from "./components/index";
 import { ME } from "../../../services/api/registration/index";
 import { useMutation, useQuery } from "@apollo/client";
 import { Heading, Button, Box, Tab, Tabs } from "grommet";
@@ -28,6 +28,8 @@ export default function EventProfile() {
     );
   };
 
+  
+
   if (loading || !data || loading_me || !data_me)
     return <div>Loading ... </div>;
 
@@ -38,6 +40,7 @@ export default function EventProfile() {
   
   return (
     <Box>
+    <EventPicturesOnCreation id={data.getEventBySlug.id}/>
       <Heading>{event.name}</Heading>
       {!is_owner ? (
         <Button label="join event" onClick={handleEventJoinReq}></Button>
