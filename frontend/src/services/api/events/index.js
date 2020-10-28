@@ -120,6 +120,24 @@ export const EVENT_BY_SLUG = gql`
     }
 `;
 
+export const GET_EVENT_PICTURES_BY_ID_ON_END = gql`
+    query {
+        getEventPicturesByIdOnEnd(id: 1) {
+            id
+            pictures
+        }
+    }
+`;
+
+export const GET_EVENT_PICTURES_BY_ID_ON_CREATION = gql`
+    query {
+        getEventPicturesByIdOnCreation(id: 1) {
+            id
+            pictures
+        }
+    }
+`;
+
 export const EVENT_JOIN_REQUEST = gql`
     mutation addEventUserJoinRequest($id: ID!) {
         addEventUserJoinRequest(id: $id) {
@@ -204,9 +222,10 @@ export const GET_USER_NOTIFICATIONS_UNREAD = gql`
 `;
 
 export const GET_CURRENT_USER_RECENT_EVENTS = gql`
-query{
-    getRecentUserEvents{
-      name
-      slug
+    query {
+        getRecentUserEvents {
+            name
+            slug
+        }
     }
-  }`
+`;
