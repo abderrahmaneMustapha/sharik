@@ -1,2 +1,2 @@
 from .users import Member,Tag
-from .events import Event, EventPictures, UserJoinResquest, EventEndConfirmation
+from .events import Event, EventPictures, UserJoinResquest, EventEndConfirmation, EventFav, EventHate, EventLike, EventWasthere

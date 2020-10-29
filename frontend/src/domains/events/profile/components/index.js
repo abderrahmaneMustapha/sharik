@@ -105,10 +105,12 @@ export function EventPicturesOnCreation(props) {
     if (loading) return <div>Loading</div>;
     const pictures = data.getEventPicturesByIdOnCreation;
     return (
-        <Carousel>
+        <Carousel >
             {pictures.map((element) => (
                 <Box height="small" width="small">
                     <Image
+                        fit="contain"
+                        fill
                         src={"http://localhost:8000/media/" + element.pictures}
                     />
                 </Box>
@@ -129,6 +131,7 @@ export function EventPicturesOnEnd(props) {
             {pictures.map((element) => (
                 <Box height="small" width="small">
                     <Image
+                        fit="contain"
                         fill
                         src={"http://localhost:8000/media/" + element.pictures}
                     />

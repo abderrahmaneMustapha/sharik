@@ -12,7 +12,7 @@ from graphene_file_upload.scalars import Upload
 from notifications.models import Notification
 
 #me
-from ..models import Event, EventPictures, UserJoinResquest, Member,  EventEndConfirmation
+from ..models import Event, EventPictures, UserJoinResquest, Member,  EventEndConfirmation,EventFav, EventHate, EventLike, EventWasthere
 from ..forms import EventCreationForm, EventEndConfirmationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
 #python
@@ -44,6 +44,21 @@ class  EventEndConfirmationType(DjangoObjectType):
     class Meta : 
         model = EventEndConfirmation
         fields = ['text']
+class EventFavType(DjangoObjectType):
+    class Meta : 
+        model = EventFav
+
+class EventLikeType(DjangoObjectType):
+    class Meta : 
+        model = EventLike
+
+class EventHateType(DjangoObjectType):
+    class Meta : 
+        model = EventHate
+
+class EventWasthereType(DjangoObjectType):
+    class Meta : 
+        model = EventWasthere
 #Types end
 
 # mutations
@@ -144,6 +159,32 @@ class AcceptUserJoinResquestMutation(graphene.Mutation):
             success = False
             raise Exception("Permission denied")
         return AcceptUserJoinResquestMutation(event_join_req= event_join_req, success=success)
+
+class EventLikeMutation(graphene.Mutation):
+    class Arguments:
+        id= graphene.ID()
+    
+    success = graphene.Boolean()
+    event_like = graphene.Field(EventLikeType)
+
+    @login_required
+    def mutate(root, info, id):
+        event = Event.objects.get(id= id)
+        event_like  = EventLike.objects.create(event=event, user=info.context.user)
+        return EventLikeMutation(event_like=event_like, success=success)
+
+class EventFavMutation(graphene.Mutation):
+    class Arguments:
+        id= graphene.ID()
+    
+    success = graphene.Boolean()
+    event_fav = graphene.Field(EventFavType)
+
+    @login_required
+    def mutate(root, info, id):
+        event = Event.objects.get(id= id)
+        event_fav  = EventFav.objects.create(event=event, user=info.context.user)
+        return EventLikeMutation(event_fav=event_fav, success=success)
 
 class  EventEndConfirmationMutations(DjangoModelFormMutation):
     event_end_confirmation = graphene.Field(EventEndConfirmationType)
