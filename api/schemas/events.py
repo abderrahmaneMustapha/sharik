@@ -166,11 +166,13 @@ class EventLikeMutation(graphene.Mutation):
     
     success = graphene.Boolean()
     event_like = graphene.Field(EventLikeType)
+    event_like_numbers = graphene.Int()
 
     @login_required
     def mutate(root, info, id):
         event = Event.objects.get(id= id)
         event_like  = EventLike.objects.create(event=event, user=info.context.user)
+        event_like_numbers = EventLike.objects.create(event=event).count()
         return EventLikeMutation(event_like=event_like, success=success)
 
 class EventFavMutation(graphene.Mutation):
@@ -179,12 +181,41 @@ class EventFavMutation(graphene.Mutation):
     
     success = graphene.Boolean()
     event_fav = graphene.Field(EventFavType)
-
+    event_fav_numbers = graphene.Int()
     @login_required
     def mutate(root, info, id):
         event = Event.objects.get(id= id)
         event_fav  = EventFav.objects.create(event=event, user=info.context.user)
-        return EventLikeMutation(event_fav=event_fav, success=success)
+        event_fav_numbers = EventFav.objects.filter(event=event).count()
+        return  EventFavMutation(event_fav=event_fav,event_fav_numbers=event_fav_numbers, success=success)
+
+class EventWasthereMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID()
+
+    success = graphene.Boolean()
+    event_was_there = graphene.Field(EventFavType)
+    event_was_there_numbers = graphene.Int()
+    @login_required
+    def mutate(root, info, id):
+        event = Event.objects.get(id= id)
+        event_was_there  =EventWasthere.objects.create(event=event, user=info.context.user)
+        event_was_there_numbers = EventWasthere.objects.filter(event=event).count()
+        return  EventWasthereMutation(event_was_there=event_was_there,event_was_there_numbers=event_was_there_numbers, success=success)
+class EventHateMutation(graphene.Mutation):
+    class Arguments:
+        id= graphene.ID()
+    
+    success = graphene.Boolean()
+    event_hate = graphene.Field(EventFavType)
+    
+
+    @login_required
+    def mutate(root, info, id):
+        event = Event.objects.get(id= id)
+        event_hate   = EventHate.objects.create(event=event, user=info.context.user)
+        return  EventHateMutation(event_hate =event_hate, success=success)
+
 
 class  EventEndConfirmationMutations(DjangoModelFormMutation):
     event_end_confirmation = graphene.Field(EventEndConfirmationType)
@@ -192,7 +223,6 @@ class  EventEndConfirmationMutations(DjangoModelFormMutation):
         form_class = EventEndConfirmationForm
 
 # mutations end
-
 
 ### main mutation
 class EventMutation(graphene.ObjectType):
@@ -202,6 +232,10 @@ class EventMutation(graphene.ObjectType):
     add_event_user_join_request = UserJoinResquestMutation.Field()
     accept_event_user_join_request = AcceptUserJoinResquestMutation.Field()
     event_end_confirmation =  EventEndConfirmationMutations.Field()
+    event_favorite = EventFavMutation.Field()
+    event_like = EventLikeMutation.Field()
+    event_hate = EventHateMutation.Field()
+    event_was_there = EventWasthereMutation.Field()
     
 
 ### main query 

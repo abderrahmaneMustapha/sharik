@@ -121,7 +121,7 @@ export const EVENT_BY_SLUG = gql`
 `;
 
 export const GET_EVENT_PICTURES_BY_ID_ON_END = gql`
-    query  getEventPicturesByIdOnEnd($id: ID!) {
+    query getEventPicturesByIdOnEnd($id: ID!) {
         getEventPicturesByIdOnEnd(id: $id) {
             id
             pictures
@@ -130,8 +130,8 @@ export const GET_EVENT_PICTURES_BY_ID_ON_END = gql`
 `;
 
 export const GET_EVENT_PICTURES_BY_ID_ON_CREATION = gql`
-    query getEventPicturesByIdOnCreation($id:ID!) {
-        getEventPicturesByIdOnCreation(id:$id) {
+    query getEventPicturesByIdOnCreation($id: ID!) {
+        getEventPicturesByIdOnCreation(id: $id) {
             id
             pictures
         }
@@ -229,3 +229,37 @@ export const GET_CURRENT_USER_RECENT_EVENTS = gql`
         }
     }
 `;
+
+export const LIKE_EVENT = gql`
+    mutation eventLike($id: ID!) {
+        eventLike(id: $id) {
+            success
+            eventLikeNumbers
+        }
+    }
+`;
+
+export const FAV_EVENT = gql`
+    mutation eventFavorite($id: ID!) {
+        eventFavorite(id: $id) {
+            success
+            eventFavNumbers
+        }
+    }
+`;
+
+export const WAS_THERE_EVENT = gql`
+    mutation eventWasThere($id: ID!) {
+        eventWasThere(id: $id) {
+            success,
+            eventWasThere,
+        }
+    }
+`;
+
+export const HATE_EVENT = gql`
+mutation eventWasThere($id: ID!) {
+    eventWasThere(id: $id) {
+        success
+    }
+}`
