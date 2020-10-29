@@ -3,9 +3,10 @@ import {
     GET_PENDING_EVENT_JOIN_REQUEST,
     ACCEPT_JOIN_REQUEST,
     GET_EVENT_ACCEPTED_JOIN_REQUEST,
-    GET_EVENT_PICTURES_BY_ID_ON_CREATION
+    GET_EVENT_PICTURES_BY_ID_ON_CREATION,
+    GET_EVENT_PICTURES_BY_ID_ON_END,
 } from "../../../../services/api/events/index";
-import { List, Image, Text, Box, Button } from "grommet";
+import { List, Image, Text, Box, Button, Carousel } from "grommet";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -96,17 +97,43 @@ export function EventJoinRequestAccept(props) {
     );
 }
 
-export function  EventPicturesOnCreation(props){
+export function EventPicturesOnCreation(props) {
+    const { data, loading } = useQuery(GET_EVENT_PICTURES_BY_ID_ON_CREATION, {
+        variables: { id: props.id },
+    });
 
-  const { data, loading} = useQuery(GET_EVENT_PICTURES_BY_ID_ON_CREATION, {
-    variables: {id: props.id}
-  })
-  
-  if (loading) return <div>Loading</div>
-  const  pictures = data.getEventPicturesByIdOnCreation 
-  return(
-    pictures.map(element=>(
-      <Image src={"http://localhost:8000/media/"+element.pictures} />
-    ))
-  )
+    if (loading) return <div>Loading</div>;
+    const pictures = data.getEventPicturesByIdOnCreation;
+    return (
+        <Carousel>
+            {pictures.map((element) => (
+                <Box height="small" width="small">
+                    <Image
+                        src={"http://localhost:8000/media/" + element.pictures}
+                    />
+                </Box>
+            ))}
+        </Carousel>
+    );
+}
+
+export function EventPicturesOnEnd(props) {
+    const { data, loading } = useQuery(GET_EVENT_PICTURES_BY_ID_ON_END, {
+        variables: { id: props.id },
+    });
+
+    if (loading) return <div>Loading</div>;
+    const pictures = data.getEventPicturesByIdOnEnd;
+    return (
+        <Carousel>
+            {pictures.map((element) => (
+                <Box height="small" width="small">
+                    <Image
+                        fill
+                        src={"http://localhost:8000/media/" + element.pictures}
+                    />
+                </Box>
+            ))}
+        </Carousel>
+    );
 }

@@ -64,8 +64,30 @@ class EventPictures(models.Model):
     on_end = models.BooleanField(_("event pictures when the event end"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+class EventLike(models.Model):
+    event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
+    user = models.ForeignKey(Member, verbose_name=_('the user who like this event'), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class EventFav(models.Model):
+    event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
+    user = models.ForeignKey(Member, verbose_name=_('the user who fav this event'), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class EventHate(models.Model):
+    event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
+    user = models.ForeignKey(Member, verbose_name=_('the user who hate this event'), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
+class EventWasthere(models.Model):
+    event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
+    user = models.ForeignKey(Member, verbose_name=_('the user who was there '), on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 class UserJoinResquest(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     request_from = models.ForeignKey(Member, verbose_name=_('the user who want join this event'), on_delete=models.CASCADE)
