@@ -70,11 +70,18 @@ class EventLike(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if EventLike.objects.filter(event=self.event, user=self.user).count() < 20:
+            super(EventLike, self).save(*args, **kwargs)
+
 class EventFav(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     user = models.ForeignKey(Member, verbose_name=_('the user who fav this event'), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def save(self, *args, **kwargs):
+        if not EventFav.objects.filter(event=self.event, user=self.user).exists():
+            super(EventFav, self).save(*args, **kwargs)
 
 class EventHate(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
@@ -82,15 +89,20 @@ class EventHate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not EventHate.objects.filter(event=self.event, user=self.user).exists():
+            super(EventHate, self).save(*args, **kwargs)
 
+
+# was there means event page view
 class EventWasthere(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     user = models.ForeignKey(Member, verbose_name=_('the user who was there '), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def save(self, *args, **kwargs):
-        
-        super(EventWasthere, self).save(*args, **kwargs)
+        if not EventWasthere.objects.filter(event=self.event, user=self.user).exists():
+            super(EventWasthere, self).save(*args, **kwargs)
 class UserJoinResquest(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     request_from = models.ForeignKey(Member, verbose_name=_('the user who want join this event'), on_delete=models.CASCADE)
