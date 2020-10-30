@@ -88,7 +88,9 @@ class EventWasthere(models.Model):
     user = models.ForeignKey(Member, verbose_name=_('the user who was there '), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def save(self, *args, **kwargs):
+        
+        super(EventWasthere, self).save(*args, **kwargs)
 class UserJoinResquest(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     request_from = models.ForeignKey(Member, verbose_name=_('the user who want join this event'), on_delete=models.CASCADE)

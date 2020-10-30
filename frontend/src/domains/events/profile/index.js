@@ -13,6 +13,7 @@ import {
 import { ME } from "../../../services/api/registration/index";
 import { useMutation, useQuery } from "@apollo/client";
 import { Heading, Button, Tab, Tabs, Grid, Header, Box } from "grommet";
+import { LikeSideBar } from "../../../components/nav/side/index";
 
 export default function EventProfile() {
     let match = useRouteMatch();
@@ -42,32 +43,41 @@ export default function EventProfile() {
     const is_owner = event.eventCreator.email === current_user_email;
 
     return (
-        <Grid fill rows={["medium", "auto"]}   columns={["auto"]}>
-            <Header direction="column">
-                <Heading>{event.name}</Heading>
-                <EventPicturesOnCreation id={data.getEventBySlug.id} />
-                <EventPicturesOnEnd id={data.getEventBySlug.id} />
-            </Header>
+        <>
+             <LikeSideBar id={data.getEventBySlug.id}></LikeSideBar>
+            <Box margin="large">
+                <Grid fill rows={["medium", "auto"]} columns={["auto"]}>
+                    <Header direction="column">
+                        <Heading>{event.name}</Heading>
+                        <EventPicturesOnCreation id={data.getEventBySlug.id} />
+                        <EventPicturesOnEnd id={data.getEventBySlug.id} />
+                    </Header>
+                   
+                    <Box direction="column">
+                        {!is_owner ? (
+                            <Button
+                                label="join event"
+                                onClick={handleEventJoinReq}
+                            ></Button>
+                        ) : undefined}
+                        <Tabs>
+                            {is_owner ? (
+                                <Tab title="join request">
+                                    <EventJoinRequestPending
+                                        slug={match.params.slug}
+                                    />
+                                </Tab>
+                            ) : undefined}
 
-            <Box direction="column">
-                {!is_owner ? (
-                    <Button
-                        label="join event"
-                        onClick={handleEventJoinReq}
-                    ></Button>
-                ) : undefined}
-                <Tabs>
-                    {is_owner ? (
-                        <Tab title="join request">
-                            <EventJoinRequestPending slug={match.params.slug} />
-                        </Tab>
-                    ) : undefined}
-
-                    <Tab title="members">
-                        <EventJoinRequestAccept slug={match.params.slug} />
-                    </Tab>
-                </Tabs>
+                            <Tab title="members">
+                                <EventJoinRequestAccept
+                                    slug={match.params.slug}
+                                />
+                            </Tab>
+                        </Tabs>
+                    </Box>
+                </Grid>
             </Box>
-        </Grid>
+        </>
     );
 }

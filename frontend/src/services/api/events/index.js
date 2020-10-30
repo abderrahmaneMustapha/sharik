@@ -238,6 +238,11 @@ export const LIKE_EVENT = gql`
         }
     }
 `;
+export const GET_EVENT_LIKES_NUMBERS = gql`
+    query getEventsLikesNumbers($id: ID!) {
+        getEventsLikesNumbers(id: $id)
+    }
+`;
 
 export const FAV_EVENT = gql`
     mutation eventFavorite($id: ID!) {
@@ -247,19 +252,29 @@ export const FAV_EVENT = gql`
         }
     }
 `;
+export const GET_EVENT_FAVS_NUMBERS = gql`
+    query getEventsFavsNumbers($id: ID!) {
+        getEventsFavsNumbers(id: $id)
+    }
+`;
 
 export const WAS_THERE_EVENT = gql`
     mutation eventWasThere($id: ID!) {
         eventWasThere(id: $id) {
-            success,
-            eventWasThere,
+            success
+            eventWasThereNumbers
         }
     }
 `;
-
-export const HATE_EVENT = gql`
-mutation eventWasThere($id: ID!) {
-    eventWasThere(id: $id) {
-        success
+export const GET_EVENT_WAS_THERES_NUMBERS = gql`
+    query getEventsWasThereNumbers($id: ID!) {
+        getEventsWasThereNumbers(id: $id)
     }
-}`
+`;
+export const HATE_EVENT = gql`
+    mutation eventHate($id: ID!) {
+        eventHate(id: $id) {
+            success
+        }
+    }
+`;

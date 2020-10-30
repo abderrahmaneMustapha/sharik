@@ -171,9 +171,10 @@ class EventLikeMutation(graphene.Mutation):
     @login_required
     def mutate(root, info, id):
         event = Event.objects.get(id= id)
-        event_like  = EventLike.objects.create(event=event, user=info.context.user)
-        event_like_numbers = EventLike.objects.create(event=event).count()
-        return EventLikeMutation(event_like=event_like, success=success)
+        event_like  = EventLike.objects.create(event=event,  user=info.context.user)
+        event_like_numbers = EventLike.objects.filter(event=event).count()
+        success= True
+        return EventLikeMutation(event_like=event_like, success=success,event_like_numbers=event_like_numbers )
 
 class EventFavMutation(graphene.Mutation):
     class Arguments:
@@ -187,6 +188,7 @@ class EventFavMutation(graphene.Mutation):
         event = Event.objects.get(id= id)
         event_fav  = EventFav.objects.create(event=event, user=info.context.user)
         event_fav_numbers = EventFav.objects.filter(event=event).count()
+        success= True
         return  EventFavMutation(event_fav=event_fav,event_fav_numbers=event_fav_numbers, success=success)
 
 class EventWasthereMutation(graphene.Mutation):
@@ -201,7 +203,8 @@ class EventWasthereMutation(graphene.Mutation):
         event = Event.objects.get(id= id)
         event_was_there  =EventWasthere.objects.create(event=event, user=info.context.user)
         event_was_there_numbers = EventWasthere.objects.filter(event=event).count()
-        return  EventWasthereMutation(event_was_there=event_was_there,event_was_there_numbers=event_was_there_numbers, success=success)
+        success= True
+        return  EventWasthereMutation(event_was_there=event_was_there,event_was_there_numbers=event_was_there_numbers,success=success)
 class EventHateMutation(graphene.Mutation):
     class Arguments:
         id= graphene.ID()
@@ -214,6 +217,7 @@ class EventHateMutation(graphene.Mutation):
     def mutate(root, info, id):
         event = Event.objects.get(id= id)
         event_hate   = EventHate.objects.create(event=event, user=info.context.user)
+        success= True
         return  EventHateMutation(event_hate =event_hate, success=success)
 
 
@@ -254,7 +258,11 @@ class Query(graphene.ObjectType):
     get_event_pictures_by_id_on_creation = graphene.List(EventPicturesType, id=graphene.ID())
     get_event_pictures_by_id_on_end = graphene.List(EventPicturesType, id=graphene.ID())
     
+    get_events_likes_numbers = graphene.Int( id=graphene.ID())
+    get_events_favs_numbers = graphene.Int( id=graphene.ID())
+    get_events_was_there_numbers = graphene.Int( id=graphene.ID())
 
+    
     @login_required
     def resolve_all_events(root, info):
         return Event.objects.filter(is_accepted=True)
@@ -307,3 +315,15 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_get_event_pictures_by_id_on_end(root, info, id):
         return EventPictures.objects.filter(event__id=id, on_end=True)
+
+    @login_required
+    def resolve_get_events_likes_numbers(root, info, id):
+        return EventLike.objects.filter(event__id=id).count()
+    
+    @login_required
+    def resolve_get_events_favs_numbers(root, info, id):
+        return EventFav.objects.filter(event__id=id).count()
+    
+    @login_required
+    def resolve_get_events_was_there_numbers(root, info, id):
+        return EventWasthere.objects.filter(event__id=id).count()
