@@ -59,7 +59,7 @@ function CreateEvent(){
           <Layer
             position="right"
             full="vertical"
-            
+            margin={{left:"100%"}}
             modal
             onClickOutside={onClose}
             onEsc={onClose}
@@ -69,6 +69,7 @@ function CreateEvent(){
               width="100vw"
               overflow="auto"
               pad="medium"
+             
               onSubmit={onClose}
             >
               <Box flex={false} direction="row" justify="between">

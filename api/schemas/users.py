@@ -1,7 +1,7 @@
 from graphene_django import DjangoObjectType
 from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphene_django import DjangoListField
-from ..models import Member,Tag
+from ..models import Member,Tags
 from ..forms import MemberCreationForm
 import   graphene 
 from notifications.models import Notification
@@ -13,9 +13,9 @@ class MembersType(DjangoObjectType):
         model = Member
         fields = '__all__'
 
-class TagType(DjangoObjectType):
+class TagsType(DjangoObjectType):
     class Meta:
-        model  = Tag
+        model  = Tags
         fields  = '__all__'
 
 class NotificationsType(DjangoObjectType):
@@ -23,6 +23,10 @@ class NotificationsType(DjangoObjectType):
         model = Notification
         fields = '__all__'
 
+class TagsType(DjangoObjectType):
+    class Meta:
+        model = Tags
+        fields= '__all__'
 ########################################
 ########################################
 ######################################## Forms Mutations
@@ -40,10 +44,14 @@ class UserMutation(graphene.ObjectType):
 ### main query
 class Query(graphene.ObjectType):
     all_members = graphene.List(MembersType)
+    all_tags = graphene.List(TagsType)
     get_user_notifications_unread = graphene.List(NotificationsType)
-
+    
     def resolve_all_members(root, info):
         return Member.objects.all()
+
+    def resolve_all_tags(root, info):
+        return Tags.objects.all()
 
     @login_required
     def resolve_get_user_notifications_unread(root, info):

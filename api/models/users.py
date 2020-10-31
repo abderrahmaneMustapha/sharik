@@ -61,13 +61,3 @@ class Member(AbstractUser):
     def __str__(self):
         return str(self.email)
 
-class Tag(models.Model):
-    name = models.CharField(_("tag name"),max_length=500 )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
-    def __str__(self):
-        return str(self.name)

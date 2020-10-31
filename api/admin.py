@@ -17,6 +17,6 @@ class  EventPicturesAdmin(admin.ModelAdmin):
 class  MemeberAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Tag)
-class  TagAdmin(admin.ModelAdmin):
+@admin.register(Tags)
+class  TagsAdmin(admin.ModelAdmin):
     pass

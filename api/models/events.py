@@ -115,6 +115,7 @@ class UserJoinResquest(models.Model):
     accept = models.BooleanField(_("accept this request"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     def get_event_owner(self):
         return self.event.event_creator
 
