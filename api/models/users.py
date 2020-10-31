@@ -13,6 +13,7 @@ import uuid
 #me
 from ..validators import validate_image_size
 from ..managers import CustomUserManager
+from .base import Tags
 
 # Choices.
 Male =1
@@ -35,12 +36,14 @@ class Member(AbstractUser):
         default = uuid.uuid4, 
         editable = True)
     first_name = models.CharField(_("first name"), max_length=150, null=True)
+    
     last_name = models.CharField(_("last name"), max_length=150, null=True)
     date_birth = models.DateField(_("date of birth"), auto_now=False, auto_now_add=False, null=True)
     level = models.ForeignKey(UserLevels,verbose_name=_("user study level and field"), on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email adress'), unique=True)
     phone = PhoneNumberField(_("phone number"), null=True)
     gender =models.IntegerField(_("Gender"), choices = Gender, default=1, null=True)
+    tags = models.ManyToManyField(Tags, verbose_name=_("event tags"))
     description  = models.TextField(_("a short description"))
     univ_key  = models.CharField(_("University key"), max_length=300, unique=True, null=True)
     adress = models.CharField(_("adress"), max_length=500, null=True)

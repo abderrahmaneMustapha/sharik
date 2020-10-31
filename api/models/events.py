@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 #me
 from ..validators import validate_image_size
 from .users import Member
-
+from .base import Tags
 # Choices.
 Past =1
 Current =2
@@ -24,6 +24,7 @@ class Event(models.Model):
     event_creator  = models.ForeignKey(Member, verbose_name=_('event creator'), on_delete=models.CASCADE)
     description = models.TextField(max_length=300)    
     position = models.CharField('event place,  city or country',max_length=200)
+    tags = models.ManyToManyField(Tags, verbose_name=_("event tags"))
     start_at = models.DateField(_('event starting date'))
     end_at = models.DateField(_('event ending date'))
     status = models.IntegerField(_("Event statu"), choices = EVENT_STATUS , default=1) # specify the if this a past event  , upcoming or current
@@ -103,6 +104,8 @@ class EventWasthere(models.Model):
     def save(self, *args, **kwargs):
         if not EventWasthere.objects.filter(event=self.event, user=self.user).exists():
             super(EventWasthere, self).save(*args, **kwargs)
+
+
 class UserJoinResquest(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     request_from = models.ForeignKey(Member, verbose_name=_('the user who want join this event'), on_delete=models.CASCADE)
@@ -129,8 +132,3 @@ class UserJoinResquest(models.Model):
         
         super(UserJoinResquest, self).save(*args, **kwargs)
 
-
-class Tags(models.Model):
-    name = models.CharField("tag name", max_length=250)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)

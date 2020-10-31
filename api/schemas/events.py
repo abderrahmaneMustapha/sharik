@@ -67,6 +67,7 @@ class EventsMutation(graphene.Mutation):
         name = graphene.String()
         description = graphene.String()
         position = graphene.String()
+        tags = graphene.List(graphene.String)
         start_at = graphene.Date()
         end_at = graphene.Date()
         profile_pic =  Upload()
@@ -74,7 +75,7 @@ class EventsMutation(graphene.Mutation):
     success= graphene.Boolean()
     event = graphene.Field(EventType)
 
-    def mutate(root, info, name , description, position, start_at, end_at, profile_pic):
+    def mutate(root, info, name , description, position, tags ,start_at, end_at, profile_pic):
         ''' check if the start data is greate than the end date and greater or equal to the current date '''
         today = datetime.date(datetime.now())
         if start_at < today : 
@@ -83,6 +84,10 @@ class EventsMutation(graphene.Mutation):
             raise GraphQLError("the field end at must be greater than start at field")
 
         event  = Event.objects.create(name=name, event_creator=Member.objects.get(pk=info.context.user.pk), description=description, position=position, start_at=start_at, end_at=end_at, profile_pic=profile_pic)
+        
+        for tag in tags :
+            event.tags.add(tag)
+
         event.slug = slugify("{} {}".format(event.id ,  event.name))
         event.save()
         success=True

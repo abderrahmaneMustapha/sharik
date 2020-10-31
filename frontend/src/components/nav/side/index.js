@@ -146,7 +146,8 @@ export const LikeSideBar = (props) => (
     <Layer position="left" modal={false}>
         <LikeButton id={props.id} />
         <FavButton id={props.id} />
-        <HateButton id={props.id} />
         <WasThereButton id={props.id} />
+        <HateButton id={props.id} />
+        
     </Layer>
 );
