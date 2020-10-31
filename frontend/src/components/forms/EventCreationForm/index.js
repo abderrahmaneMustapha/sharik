@@ -69,6 +69,11 @@ export default function EventCreationForm(props) {
         },
     });
 
+    let handleUpdateTags  = (tags)=>{
+        alert("hey")
+        formik.setFieldValue('tags', tags)
+    }
+
     if (loading || tags_loading) return <div>Loading ... </div>;
 
     let errors = data ? data.addEvent.errors : undefined;
@@ -100,12 +105,15 @@ export default function EventCreationForm(props) {
                 ) : null}
 
                 <label htmlFor="description">Event description</label>
+                
                 <TextArea
                     id="description"
                     name="description"
                     placeholder="New event description"
                     onChange={formik.handleChange}
-                />
+                    
+                /> 
+        
                 {formik.errors.description && formik.touched.description ? (
                     <div>{formik.errors.description}</div>
                 ) : null}
@@ -116,6 +124,7 @@ export default function EventCreationForm(props) {
                     name="position"
                     placeholder="New event position ( country , city ) or (city , place) "
                     onChange={formik.handleChange}
+
                 />
                 {formik.errors.position && formik.touched.position ? (
                     <div>{formik.errors.position}</div>
@@ -125,7 +134,7 @@ export default function EventCreationForm(props) {
                     id="tags"
                     name="tags"
                     allSuggestions={tags.allTags}
-                    onChange={formik.handleChange}
+                    onChange={ handleUpdateTags }
                 />
 
                 {formik.errors.tags && formik.touched.tags ? (

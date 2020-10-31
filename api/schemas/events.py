@@ -12,7 +12,7 @@ from graphene_file_upload.scalars import Upload
 from notifications.models import Notification
 
 #me
-from ..models import Event, EventPictures, UserJoinResquest, Member,  EventEndConfirmation,EventFav, EventHate, EventLike, EventWasthere
+from ..models import Event, EventPictures, UserJoinResquest, Member,  EventEndConfirmation,EventFav, EventHate, EventLike, EventWasthere, Tags
 from ..forms import EventCreationForm, EventEndConfirmationForm, EventPicturesCreationForm, UserJoinResquestCreationForm,  UserJoinResquestAcceptForm
 
 #python
@@ -85,8 +85,10 @@ class EventsMutation(graphene.Mutation):
 
         event  = Event.objects.create(name=name, event_creator=Member.objects.get(pk=info.context.user.pk), description=description, position=position, start_at=start_at, end_at=end_at, profile_pic=profile_pic)
         
+    
         for tag in tags :
-            event.tags.add(tag)
+            tag_object = Tags.objects.get(name=tag)
+            event.tags.add(tag_object)
 
         event.slug = slugify("{} {}".format(event.id ,  event.name))
         event.save()

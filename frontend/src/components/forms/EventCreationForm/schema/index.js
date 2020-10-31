@@ -13,6 +13,7 @@ export const EventCreationSchema = Yup.object().shape({
     .min(5, "Too Short!")
     .max(100, "Too Long!")
     .required("Required"),
+  tags : Yup.array().nullable(),
   startAt: Yup.date().min(4, "Too short !").required("Required"),
   endAt: Yup.date().min(4, "Too short !").required("Required"),
   profilePic: Yup.mixed().required("Required"),

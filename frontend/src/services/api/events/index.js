@@ -5,7 +5,7 @@ export const CREATE_EVENT = gql`
         $name: String!
         $description: String!
         $position: String!
-        $tags:String!
+        $tags:[String!]
         $startAt: Date!
         $endAt: Date!
         $profilePic: Upload!
