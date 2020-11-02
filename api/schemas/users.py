@@ -35,10 +35,18 @@ class MembersMutation(DjangoModelFormMutation):
     class Meta:
         form_class = MemberCreationForm
 
+class addTagsToUserMutation(graphene.Mutation):
+    class Arguments:
+         tags = graphene.List(graphene.String)
 
+    def mutate(root, info, tags):        
+        for tag in tags :
+            tag_object = Tags.objects.get(name=tag)
+            unfo.context.user.tags.add(tag_object)
 ### main mutation
 class UserMutation(graphene.ObjectType):
     add_member = MembersMutation.Field()
+    add_tags_to_user = addTagsToUserMutation.Field()
 
 
 ### main query
