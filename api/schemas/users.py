@@ -39,10 +39,13 @@ class addTagsToUserMutation(graphene.Mutation):
     class Arguments:
          tags = graphene.List(graphene.String)
 
+    success= graphene.Boolean()
+    tags = graphene.List(TagsType)
     def mutate(root, info, tags):        
         for tag in tags :
             tag_object = Tags.objects.get(name=tag)
-            unfo.context.user.tags.add(tag_object)
+            info.context.user.tags.add(tag_object)
+        return  addTagsToUserMutation(tags=tags, success=success)
 ### main mutation
 class UserMutation(graphene.ObjectType):
     add_member = MembersMutation.Field()

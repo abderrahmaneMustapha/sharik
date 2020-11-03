@@ -27,6 +27,7 @@ import {
     Link,
     DocumentTime, 
     Close,
+    AddCircle
 } from "grommet-icons";
 
 import { TopRightNav } from "../../../components/nav/top/index";
@@ -203,6 +204,12 @@ export default function Profile() {
                                         label={element}
                                     />
                                 ))}
+
+                                <Button 
+                                icon={
+                                     <AddCircle />
+                                }
+                                ></Button>
                             </Box>
                         </Box>
 
