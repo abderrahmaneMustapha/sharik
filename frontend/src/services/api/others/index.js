@@ -8,3 +8,12 @@ export const ALL_TAGS = gql`
         }
     }
 `;
+
+export const ADD_TAGS_TO_USER = gql`
+    mutation addTagsToUser($tags: [String!]) {
+        addTagsToUser(tags: $tags) {
+            success,
+            tag{name}
+        }
+    }
+`;

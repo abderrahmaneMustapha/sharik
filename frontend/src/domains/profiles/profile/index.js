@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import { ME } from "../../../services/api/registration/index";
 
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_CURRENT_USER_RECENT_EVENTS } from "../../../services/api/events/index";
-import {ALL_TAGS} from "../../../services/api/others/index"
+import {ALL_TAGS, ADD_TAGS_TO_USER} from "../../../services/api/others/index"
 import {
     Box,
     Avatar,
@@ -146,6 +146,15 @@ function SideBar() {
 
 function TagsPopUp(props) {
     const {data:tags, loading} = useQuery(ALL_TAGS)
+    const [updateTags, {loading:new_tags_loading}] = useMutation(ADD_TAGS_TO_USER)
+
+    let handleUpdateTags  = (new_tags)=>{
+        console.log(updateTags({
+            variables : {
+                tags : new_tags
+            }
+        }))
+    }
 
     return (
         <Layer
@@ -153,9 +162,9 @@ function TagsPopUp(props) {
             onClickOutside={props.onClose}
             onEsc={props.onClose}
         >
-        {loading ?  <div>Loading ... </div> :
+        {loading || new_tags_loading ?  <div>Loading ... </div> :
     
-            <TagTextInput allSuggestions={tags.allTags} />
+            <TagTextInput  onChange={handleUpdateTags} allSuggestions={tags.allTags} />
         }
         </Layer>
     );
