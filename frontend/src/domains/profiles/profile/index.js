@@ -3,7 +3,7 @@ import React from "react";
 import { ME } from "../../../services/api/registration/index";
 
 import { useQuery } from "@apollo/client";
-import {GET_CURRENT_USER_RECENT_EVENTS} from "../../../services/api/events/index"
+import { GET_CURRENT_USER_RECENT_EVENTS } from "../../../services/api/events/index";
 import {
     Box,
     Avatar,
@@ -16,7 +16,7 @@ import {
     CardBody,
     CardHeader,
     List,
-    Layer
+    Layer,
 } from "grommet";
 import {
     Facebook,
@@ -25,14 +25,14 @@ import {
     Linkedin,
     Medium,
     Link,
-    DocumentTime, 
+    DocumentTime,
     Close,
-    AddCircle
+    FormEdit,
 } from "grommet-icons";
 
 import { TopRightNav } from "../../../components/nav/top/index";
 import EventCreationForm from "../../../components/forms/EventCreationForm/index";
-import {useHistory} from "react-router-dom"
+import { useHistory } from "react-router-dom";
 
 const tags = ["gaming", "reading", "outdoors", "maths"];
 const social_media_accounts = [
@@ -44,55 +44,58 @@ const social_media_accounts = [
     <Link />,
 ];
 
-function CreateEvent(){
+function CreateEvent() {
     const [open, setOpen] = React.useState(false);
-  
+
     const onOpen = () => setOpen(true);
-  
+
     const onClose = () => setOpen(undefined);
-    return(
+    return (
         <>
-         <Button icon={<DocumentTime  />} label={(
-             <Text><strong>Add</strong></Text>
-         )
-         } onClick={onOpen} />
-        {open && (
-          <Layer
-            position="right"
-            full="vertical"
-            margin={{left:"100%"}}
-            modal
-            onClickOutside={onClose}
-            onEsc={onClose}
-          >
-            <Box
-              fill="vertical"
-              width="100vw"
-              overflow="auto"
-              pad="medium"
-             
-              onSubmit={onClose}
-            >
-              <Box flex={false} direction="row" justify="between">
-                <Heading level={2} margin="none">
-                  Add new event
-                </Heading>
-                <Button icon={<Close />} onClick={onClose} />
-              </Box>
-                <EventCreationForm />
-              
-            </Box>
-          </Layer>
-        )}
+            <Button
+                icon={<DocumentTime />}
+                label={
+                    <Text>
+                        <strong>Add</strong>
+                    </Text>
+                }
+                onClick={onOpen}
+            />
+            {open && (
+                <Layer
+                    position="right"
+                    full="vertical"
+                    margin={{ left: "100%" }}
+                    modal
+                    onClickOutside={onClose}
+                    onEsc={onClose}
+                >
+                    <Box
+                        fill="vertical"
+                        width="100vw"
+                        overflow="auto"
+                        pad="medium"
+                        onSubmit={onClose}
+                    >
+                        <Box flex={false} direction="row" justify="between">
+                            <Heading level={2} margin="none">
+                                Add new event
+                            </Heading>
+                            <Button icon={<Close />} onClick={onClose} />
+                        </Box>
+                        <EventCreationForm />
+                    </Box>
+                </Layer>
+            )}
         </>
-    )
+    );
 }
 
 function Bio() {
     return (
         <Card height="fit-content" pad="medium">
             <CardHeader>
-                <Heading level="3" >Bio : </Heading>
+                <Heading level="3">Bio : </Heading>
             </CardHeader>
             <CardBody height="fit-content" pad="small">
                 <Text>
@@ -117,10 +120,10 @@ function Bio() {
 }
 
 function SideBar() {
-    const {data , loading}= useQuery(GET_CURRENT_USER_RECENT_EVENTS)
-    const history = useHistory()
+    const { data, loading } = useQuery(GET_CURRENT_USER_RECENT_EVENTS);
+    const history = useHistory();
 
-    if (loading) return <div>Loading .... </div>
+    if (loading) return <div>Loading .... </div>;
     return (
         <Card height="fit-content" pad="medium">
             <CardHeader>
@@ -130,14 +133,33 @@ function SideBar() {
                 <List
                     primaryKey="name"
                     data={data.getRecentUserEvents}
-                    onClickItem={(event)=>{
-                    history.push(`/events/${event.item.slug}`)
+                    onClickItem={(event) => {
+                        history.push(`/events/${event.item.slug}`);
                     }}
                     border="bottom"
-
                 />
             </CardBody>
         </Card>
+    );
+}
+
+function Tags(props) {
+    
+    return (
+        <Box direction="row" width="large">
+            {props.tags.map((element) => (
+                <Button
+                    margin={{
+                        left: "0",
+                        top: "0.2em",
+                        bottom: "0.2em",
+                    }}
+                    label={element}
+                />
+            ))}
+
+            <Button icon={<FormEdit />}></Button>
+        </Box>
     );
 }
 export default function Profile() {
@@ -193,24 +215,8 @@ export default function Profile() {
                             >
                                 {data.me.email}
                             </Text>
-                            <Box direction="row" width="large">
-                                {tags.map((element) => (
-                                    <Button
-                                        margin={{
-                                            left: "0",
-                                            top: "0.2em",
-                                            bottom: "0.2em",
-                                        }}
-                                        label={element}
-                                    />
-                                ))}
 
-                                <Button 
-                                icon={
-                                     <AddCircle />
-                                }
-                                ></Button>
-                            </Box>
+                            <Tags tags={tags} />
                         </Box>
 
                         <Box direction="column">
@@ -223,12 +229,17 @@ export default function Profile() {
                                 Tiaret, Algeria
                             </Text>
 
-                           <CreateEvent />
+                            <CreateEvent   />
                         </Box>
+                        
                     </Box>
+                   
                 </Header>
 
-                <Box width="90%" margin={{ left: "auto", right: "auto" ,  top:"4em"}}>
+                <Box
+                    width="90%"
+                    margin={{ left: "auto", right: "auto", top: "4em" }}
+                >
                     <Grid
                         rows={["xmedium"]}
                         columns={["60%", "40%"]}
@@ -239,7 +250,6 @@ export default function Profile() {
                         <SideBar gridArea="side" />
                     </Grid>
                 </Box>
-              
             </>
         );
     }

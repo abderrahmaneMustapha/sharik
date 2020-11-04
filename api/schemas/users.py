@@ -46,6 +46,7 @@ class addTagsToUserMutation(graphene.Mutation):
         for tag in tags :
             tag_object = Tags.objects.get(name=tag)
             info.context.user.tags.add(tag_object)
+            success = True
         return  addTagsToUserMutation(tags=tags, success=success)
 
 class removeTagsToUserMutation(graphene.Mutation):
@@ -53,12 +54,13 @@ class removeTagsToUserMutation(graphene.Mutation):
          tag = graphene.String()
 
     success= graphene.Boolean()
-    tag = graphene.String(TagsType)
+    tag = graphene.Field(TagsType)
     
-    def mutate(root, info, tags):      
+    def mutate(root, info, tag):      
         tag_object = Tags.objects.get(name=tag)
         info.context.user.tags.remove(tag_object)
-        return  removeTagsToUserMutation(tag= tag_object, success=success)
+        success = True
+        return  removeTagsToUserMutation(tag=tag_object, success=success)
 
 
 ### main mutation

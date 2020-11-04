@@ -103,36 +103,36 @@ function dictToArray(dict, key) {
 
 export function TagTextInput(props) {
     let allSuggestions = dictToArray(props.allSuggestions, "name");
-    const [selectedTags, setSelectedTags] = React.useState(["earth"]);
+    const [selectedTags, setSelectedTags] = React.useState(
+        props.selected ? props.selected : ["earth"]
+    );
     const [suggestions, setSuggestions] = React.useState(allSuggestions);
 
-    
     const onRemoveTag = (tag) => {
         const removeIndex = selectedTags.indexOf(tag);
         const newTags = [...selectedTags];
         if (removeIndex >= 0) {
             newTags.splice(removeIndex, 1);
         }
-        props.onChange(newTags)
+        props.onChange(newTags);
         setSelectedTags(newTags);
     };
 
     const onAddTag = (tag) => {
-      props.onChange([...selectedTags, tag])
-      setSelectedTags([...selectedTags, tag]);}
+        props.onChange([...selectedTags, tag]);
+        setSelectedTags([...selectedTags, tag]);
+    };
 
-    const onFilterSuggestion = (value) =>{
-      console.log(allSuggestions)
+    const onFilterSuggestion = (value) => {
         setSuggestions(
             allSuggestions.filter(
-              
                 (suggestion) =>
                     suggestion.toLowerCase().indexOf(value.toLowerCase()) >= 0
             )
-        )
-        console.log(suggestions)
-        props.onChange(suggestions)
-            }
+        );
+
+        props.onChange(suggestions);
+    };
     return (
         <TagInput
             placeholder="Search for aliases..."
@@ -140,7 +140,7 @@ export function TagTextInput(props) {
             value={selectedTags}
             onRemove={onRemoveTag}
             onAdd={onAddTag}
-            onChange={({ target: { value } }) => onFilterSuggestion(value)} 
+            onChange={({ target: { value } }) => onFilterSuggestion(value)}
         />
     );
 }
