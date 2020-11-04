@@ -1,7 +1,11 @@
+#django
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import FileExtensionValidator
 from django.utils.translation import ugettext_lazy as _
+
+#python 
+from datetime import datetime
 
 #me
 from ..validators import validate_image_size
@@ -119,6 +123,12 @@ class UserJoinResquest(models.Model):
     def get_event_owner(self):
         return self.event.event_creator
 
+    def update(self, *args, **kwargs):
+        """ check if this event was already end """
+        today = datetime.date(datetime.now())
+        if self.event.end_at < today:
+            raise Exception('can not send join request to past events')
+        super(UserJoinResquest, self).update(*args, **kwargs)
     def save(self, *args, **kwargs):
 
         """ check if the user want join his own event """
@@ -131,5 +141,10 @@ class UserJoinResquest(models.Model):
         if user_cant_send_multi_req  :
             raise Exception('User cant send join request more than once to the same event')
         
+        """ check if this event was already end """
+        today = datetime.date(datetime.now())
+        if self.event.end_at < today:
+            raise Exception('can not send join request to past events')
+
         super(UserJoinResquest, self).save(*args, **kwargs)
 
