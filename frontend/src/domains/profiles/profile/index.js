@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { ME } from "../../../services/api/registration/index";
 
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER_RECENT_EVENTS } from "../../../services/api/events/index";
+import {ALL_TAGS} from "../../../services/api/others/index"
 import {
     Box,
     Avatar,
@@ -30,11 +31,11 @@ import {
     FormEdit,
 } from "grommet-icons";
 
+import {TagTextInput} from "../../../components/inputs/index"
 import { TopRightNav } from "../../../components/nav/top/index";
 import EventCreationForm from "../../../components/forms/EventCreationForm/index";
 import { useHistory } from "react-router-dom";
 
-const tags = ["gaming", "reading", "outdoors", "maths"];
 const social_media_accounts = [
     <Facebook />,
     <Github />,
@@ -143,28 +144,59 @@ function SideBar() {
     );
 }
 
-function Tags(props) {
-    
-    return (
-        <Box direction="row" width="large">
-            {props.tags.map((element) => (
-                <Button
-                    margin={{
-                        left: "0",
-                        top: "0.2em",
-                        bottom: "0.2em",
-                    }}
-                    label={element}
-                />
-            ))}
+function TagsPopUp(props) {
+    const {data:tags, loading} = useQuery(ALL_TAGS)
 
-            <Button icon={<FormEdit />}></Button>
-        </Box>
+    return (
+        <Layer
+            modal={false}
+            onClickOutside={props.onClose}
+            onEsc={props.onClose}
+        >
+        {loading ?  <div>Loading ... </div> :
+    
+            <TagTextInput allSuggestions={tags.allTags} />
+        }
+        </Layer>
     );
 }
+function Tags(props) {
+    const [ open, setOpen] = useState(undefined);
+    const onClose = () => {
+        setOpen(undefined);
+    };
+    const onOpen = () => {
+        setOpen(true);
+    };
+    return (
+        <>
+            <Box direction="row" width="large">
+                {props.tags.map((element) => (
+                    <Button
+                        margin={{
+                            left: "0",
+                            top: "0.2em",
+                            bottom: "0.2em",
+                        }}
+                        label={element.name}
+                        onClick={() => {
+                            setOpen(true);
+                        }}
+                    />
+                ))}
+
+                <Button icon={<FormEdit />} onClick={onOpen}></Button>
+            </Box>
+            {open ? <TagsPopUp onClose={onClose} /> : undefined}
+        </>
+    );
+}
+
 export default function Profile() {
     const { data, loading, error } = useQuery(ME);
+   
 
+  
     if (error) console.log(error);
     if (loading) return <div>Loading ... </div>;
 
@@ -173,7 +205,7 @@ export default function Profile() {
         return <div>Not Logged in</div>;
     } else {
         localStorage.setItem("user_email", data.me.email);
-
+        const tags  = data.me.tags
         return (
             <>
                 <Header direction="column" justify="start" align="start">
@@ -229,11 +261,9 @@ export default function Profile() {
                                 Tiaret, Algeria
                             </Text>
 
-                            <CreateEvent   />
+                            <CreateEvent />
                         </Box>
-                        
                     </Box>
-                   
                 </Header>
 
                 <Box

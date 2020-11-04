@@ -58,7 +58,8 @@ export const ME = gql`
       firstName
       lastName
       email
-      gender
+      gender,
+      tags{name, id}
     }
   }
 `;
