@@ -42,7 +42,8 @@ class addTagsToUserMutation(graphene.Mutation):
     success= graphene.Boolean()
     tags = graphene.List(TagsType)
 
-    def mutate(root, info, tags):        
+    def mutate(root, info, tags):  
+        info.context.user.tags.clear()    
         for tag in tags :
             tag_object = Tags.objects.get(name=tag)
             info.context.user.tags.add(tag_object)
