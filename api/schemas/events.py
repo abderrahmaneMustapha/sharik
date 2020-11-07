@@ -43,7 +43,7 @@ class UserJoinResquestType(DjangoObjectType):
 class  EventEndConfirmationType(DjangoObjectType):
     class Meta : 
         model = EventEndConfirmation
-        fields = ['text']
+        fields = ['text', 'event']
 class EventFavType(DjangoObjectType):
     class Meta : 
         model = EventFav

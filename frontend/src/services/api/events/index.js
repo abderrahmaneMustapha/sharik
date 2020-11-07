@@ -5,11 +5,10 @@ export const CREATE_EVENT = gql`
         $name: String!
         $description: String!
         $position: String!
-        $tags:[String!]
+        $tags: [String!]
         $startAt: Date!
         $endAt: Date!
         $profilePic: Upload!
-       
     ) {
         addEvent(
             name: $name
@@ -154,6 +153,14 @@ export const EVENT_JOIN_REQUEST = gql`
     }
 `;
 
+export const ADD_EVENT_PITURES_ON_END = gql`
+    mutation addEventPicturesOnEnd($event: ID!, $photos: Upload!) {
+        ddEventPicturesOnEnd(event: $event, photos: $photos) {
+            success
+        }
+    }
+`;
+
 export const ADD_EVENT_PICTURES_ON_CREATION = gql`
     mutation addEventPicturesOnCreation($event: ID!, $pictures: Upload!) {
         addEventPicturesOnCreation(event: $event, photos: $pictures) {
@@ -269,15 +276,33 @@ export const WAS_THERE_EVENT = gql`
         }
     }
 `;
+
 export const GET_EVENT_WAS_THERES_NUMBERS = gql`
     query getEventsWasThereNumbers($id: ID!) {
         getEventsWasThereNumbers(id: $id)
     }
 `;
+
 export const HATE_EVENT = gql`
     mutation eventHate($id: ID!) {
         eventHate(id: $id) {
             success
+        }
+    }
+`;
+
+export const EVENT_END_CONFIRM = gql`
+    mutation eventEndConfirmation($id: ID!, $text: String!) {
+        eventEndConfirmation(input: { id: $id, text: $text }) {
+            errors {
+                field
+                messages
+            }
+            eventEndConfirmation {
+                event {
+                    id
+                }
+            }
         }
     }
 `;

@@ -9,6 +9,7 @@ import {
     EventJoinRequestAccept,
     EventPicturesOnCreation,
     EventPicturesOnEnd,
+    EventEndConfirmation,
 } from "./components/index";
 import { ME } from "../../../services/api/registration/index";
 import { useMutation, useQuery } from "@apollo/client";
@@ -22,6 +23,7 @@ export default function EventProfile() {
     });
 
     const [joinEvent] = useMutation(EVENT_JOIN_REQUEST);
+
     const { data: data_me, loading: loading_me } = useQuery(ME);
 
     const handleEventJoinReq = () => {
@@ -44,15 +46,16 @@ export default function EventProfile() {
 
     return (
         <>
-             <LikeSideBar id={data.getEventBySlug.id}></LikeSideBar>
+            <LikeSideBar id={data.getEventBySlug.id}></LikeSideBar>
             <Box margin="large">
+             <EventEndConfirmation />
                 <Grid fill rows={["medium", "auto"]} columns={["auto"]}>
                     <Header direction="column">
                         <Heading>{event.name}</Heading>
                         <EventPicturesOnCreation id={data.getEventBySlug.id} />
                         <EventPicturesOnEnd id={data.getEventBySlug.id} />
                     </Header>
-                   
+
                     <Box direction="column">
                         {!is_owner ? (
                             <Button

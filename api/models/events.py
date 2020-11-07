@@ -46,6 +46,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"
+        
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''    
         self.slug= slugify("{} {}".format(self.name,self.pk)) 
