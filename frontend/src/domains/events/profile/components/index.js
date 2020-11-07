@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     GET_PENDING_EVENT_JOIN_REQUEST,
     ACCEPT_JOIN_REQUEST,
@@ -7,9 +7,9 @@ import {
     GET_EVENT_PICTURES_BY_ID_ON_END,
 } from "../../../../services/api/events/index";
 
-import EventEndConfirmationForm from "../../../../components/forms/EventEndConfirmation/index"
+import EventEndConfirmationForm from "../../../../components/forms/EventEndConfirmation/index";
 import { List, Image, Text, Box, Button, Carousel, Layer } from "grommet";
-import {Checkmark, Close} from "grommet-icons"
+import { Checkmark, Close } from "grommet-icons";
 import { useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -108,7 +108,7 @@ export function EventPicturesOnCreation(props) {
     if (loading) return <div>Loading</div>;
     const pictures = data.getEventPicturesByIdOnCreation;
     return (
-        <Carousel >
+        <Carousel>
             {pictures.map((element) => (
                 <Box height="small" width="small">
                     <Image
@@ -144,35 +144,35 @@ export function EventPicturesOnEnd(props) {
     );
 }
 
-export function EventEndConfirmation(){
+export function EventEndConfirmation(props) {
     const [open, setOpen] = useState(false);
-   
 
     const onOpen = () => setOpen(true);
 
     const onClose = () => setOpen(undefined);
 
-    return(
+    return (
         <>
-        <Button icon={<Checkmark />} label="Confirm Event" onClick={onOpen} />
-        {open && (
-            <Layer
-                position="right"
-                full
-                margin={{left:"100vw"}}             
-                modal
-                onClickOutside={onClose}
-                onEsc={onClose}
-            >
-             <Box flex={false} direction="row" justify="between"  >
-                                <Button icon={<Close />} onClick={onClose} />
-            </Box>
-        <EventEndConfirmationForm />
-        </Layer>
-        )}
+            <Button
+                icon={<Checkmark />}
+                label="Confirm Event"
+                onClick={onOpen}
+            />
+            {open && (
+                <Layer
+                    position="right"
+                    full
+                    margin={{ left: "100vw" }}
+                    modal
+                    onClickOutside={onClose}
+                    onEsc={onClose}
+                >
+                    <Box flex={false} direction="row" justify="between">
+                        <Button icon={<Close />} onClick={onClose} />
+                    </Box>
+                    <EventEndConfirmationForm id={props.id} />
+                </Layer>
+            )}
         </>
-    )
+    );
 }
-
-
-

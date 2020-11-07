@@ -5,7 +5,7 @@ import { EventEndConfirmationSchema } from "./schema/index";
 import { Button, Form, FormField as Field } from "grommet";
 import { useFormik } from "formik";
 
-export default function EventEndConfirmationForm() {
+export default function EventEndConfirmationForm(props) {
 
     const [confirmEventEnd, {data}]  =  useMutation(EVENT_END_CONFIRM)
     const [eventPicturesEnd]  =  useMutation(ADD_EVENT_PITURES_ON_END)
@@ -18,12 +18,11 @@ export default function EventEndConfirmationForm() {
         validationSchema: EventEndConfirmationSchema,
         onSubmit: async (values) => {
             await new Promise(
-                console.log("onsubmit values ", values),
-
-                confirmEventEnd({
+               
+                console.log(confirmEventEnd({
                     variables: {
+                        id : props.id,
                         text: values.text,
-                        profilePic: values.profilePic,
                     },
                 }).then((data) => {
                     if (data.data.addEvent.success === true) {
@@ -39,8 +38,8 @@ export default function EventEndConfirmationForm() {
                             }
                         );
                     }
-                })
-            );
+                }))
+            )
         },
     });
 

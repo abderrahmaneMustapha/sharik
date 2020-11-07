@@ -48,7 +48,7 @@ export default function EventProfile() {
         <>
             <LikeSideBar id={data.getEventBySlug.id}></LikeSideBar>
             <Box margin="large">
-             <EventEndConfirmation />
+             <EventEndConfirmation id={data.getEventBySlug.id} />
                 <Grid fill rows={["medium", "auto"]} columns={["auto"]}>
                     <Header direction="column">
                         <Heading>{event.name}</Heading>
