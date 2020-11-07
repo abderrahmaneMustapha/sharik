@@ -30,4 +30,4 @@ class UserJoinResquestAcceptForm(forms.ModelForm):
 class EventEndConfirmationForm(forms.ModelForm):
     class Meta : 
         model = EventEndConfirmation
-        fields = ['text']
+        fields = ['text', 'event']

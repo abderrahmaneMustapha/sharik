@@ -26,8 +26,6 @@ class EventType(DjangoObjectType):
     class Meta:
         model = Event
         
-  
-
 class EventPicturesType(DjangoObjectType):
     class Meta:
         model = EventPictures

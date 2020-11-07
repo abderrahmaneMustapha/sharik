@@ -21,11 +21,11 @@ export default function EventEndConfirmationForm(props) {
                
                 console.log(confirmEventEnd({
                     variables: {
-                        id : props.id,
+                        event: props.id,
                         text: values.text,
                     },
                 }).then((data) => {
-                    if (data.data.addEvent.success === true) {
+                    if ( data.data.eventEndConfirmation.event ) {
                         Array.prototype.forEach.call(
                             values.eventPictures,
                             (element) => {

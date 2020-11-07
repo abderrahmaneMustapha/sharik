@@ -20,3 +20,10 @@ class  MemeberAdmin(admin.ModelAdmin):
 @admin.register(Tags)
 class  TagsAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(EventEndConfirmation)
+class EventEndConfirmationAdmin(admin.ModelAdmin):
+    pass
+
+
+

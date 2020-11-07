@@ -292,8 +292,8 @@ export const HATE_EVENT = gql`
 `;
 
 export const EVENT_END_CONFIRM = gql`
-    mutation eventEndConfirmation($id: ID!, $text: String!) {
-        eventEndConfirmation(input: { id: $id, text: $text }) {
+    mutation eventEndConfirmation($event: ID!, $text: String!) {
+        eventEndConfirmation(input: { event: $event, text: $text }) {
             errors {
                 field
                 messages
