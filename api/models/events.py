@@ -62,6 +62,12 @@ class EventEndConfirmation(models.Model):
     text  =  models.TextField(_('event text'))
     accepted  = models.BooleanField(_('event confirmation accepted'), null=True)
 
+    def save(self, *args, **kwargs):
+        if (EventEndConfirmation.objects.filter(event=self.event).exists()):
+            Exception (" You can not confirm event multiple times")
+        
+        super(EventEndConfirmation, self).save(*args, **kwargs)
+
 class EventPictures(models.Model):
     event  = models.ForeignKey(Event,verbose_name=_('event'), on_delete=models.CASCADE)
     pictures = models.ImageField(_('profile pic'), upload_to='users/event_pictures/{}'.format(event.name),
