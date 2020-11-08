@@ -19,26 +19,27 @@ export default function EventEndConfirmationForm(props) {
         onSubmit: async (values) => {
             await new Promise(
                
-                console.log(confirmEventEnd({
+                confirmEventEnd({
                     variables: {
                         event: props.id,
                         text: values.text,
                     },
                 }).then((data) => {
-                    if ( data.data.eventEndConfirmation.event ) {
+                    if ( data.data.eventEndConfirmation ) {
                         Array.prototype.forEach.call(
                             values.eventPictures,
                             (element) => {
-                                eventPicturesEnd({
+                        
+                                console.log(eventPicturesEnd({
                                     variables: {
-                                        event: data.data.eventEndConfirmation.event.id,
+                                        event:  props.id,
                                         photos: element,
                                     },
-                                });
+                                }))
                             }
                         );
                     }
-                }))
+                })
             )
         },
     });

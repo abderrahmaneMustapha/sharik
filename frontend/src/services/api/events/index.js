@@ -155,7 +155,7 @@ export const EVENT_JOIN_REQUEST = gql`
 
 export const ADD_EVENT_PITURES_ON_END = gql`
     mutation addEventPicturesOnEnd($event: ID!, $photos: Upload!) {
-        ddEventPicturesOnEnd(event: $event, photos: $photos) {
+        addEventPicturesOnEnd(event: $event, photos: $photos) {
             success
         }
     }
