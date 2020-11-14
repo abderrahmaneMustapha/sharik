@@ -1,9 +1,10 @@
 import React from "react";
 import { CREATE_USER } from "../../../services/api/registration/index";
 import { useMutation } from "@apollo/client";
+import { useFormik } from "formik";
 import { SignupSchema } from "./schema/index";
 import { Button, Form, FormField as Field } from "grommet";
-import { useFormik } from "formik";
+
 
 import { useHistory } from "react-router-dom";
 
